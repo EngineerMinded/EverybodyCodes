@@ -9,7 +9,9 @@
 #include <vector>
 #include <string>
 using namespace std;
-
+/**************************************************************************
+ * Read data from file and create data array from them                    *
+ **************************************************************************/
 std::vector<std::string> readWordsFromFile(const std::string& filename) {
     std::ifstream file(filename);  // Open the file
     std::vector<std::string> words;  // Vector to store the words
@@ -29,7 +31,9 @@ std::vector<std::string> readWordsFromFile(const std::string& filename) {
     return words;  // Return the vector of words
 }
 
-
+/********************************************************************
+ * Count how many times a specific word shows up in the sentence    *
+ ********************************************************************/
 int countWordInSentence(string word, string sentence) {
     int count = 0;
     for (int x = 0; x < sentence.size() - word.size(); x++) {
@@ -47,8 +51,12 @@ int countWordInSentence(string word, string sentence) {
     }
     return count;
 }
-
-int countNumberOfRunes (vector<string> words, string Sentence, int wordSize) {
+/*********************************************************************
+ * Create an array with boolean variables. every valid letter is     *
+ * determined by a true boolean, count them and you get to the       *
+ * answer for part 2.                                                *
+ *********************************************************************/
+int countNumberOfRunes (vector<string> words, string Sentence, int wordSize, bool isPart3) {
     int count = 0;
     bool validRunes[Sentence.size()];
     for (int o = 0; o < Sentence.size(); o++) {
@@ -64,6 +72,7 @@ int countNumberOfRunes (vector<string> words, string Sentence, int wordSize) {
                 }
                 w++;
             }
+
             if (!wholeWord) {
                int v = w - 1;
                wholeWord = true;
@@ -95,6 +104,10 @@ int countNumberOfRunes (vector<string> words, string Sentence, int wordSize) {
     return count;
 
 }
+
+
+
+
 void part1 () {
     //string words[] =  {"THE","OWE","MES","ROD","HER"};
     //string sentence = "AWAKEN THE POWER ADORNED WITH THE FLAMES BRIGHT IRE";
@@ -115,15 +128,26 @@ void part2 () {
     vector<string> sentences = readWordsFromFile("Q2P2Sentence.txt");
     for (string sentence: sentences) {
             int size = sizeof(words) / sizeof(words[0]);
-        partTwo += countNumberOfRunes(words, sentence, size);
+        partTwo += countNumberOfRunes(words, sentence, size, false);
     }
     cout << "Part Two :" << partTwo << endl;
 }
 
 /// PART 3 : COMING SOON
 
+void part3() {
+    int part3 = 0;
+    vector<string>words = readWordsFromFile("part3WordsExample.txt");
+    vector<string>puzzle = readWordsFromFile("part3PuzzleExample.txt");
+    cout << puzzle[0][1] << " PPPP " << puzzle[1][2] << endl;
+
+
+
+}
+
 int main() {
     part1();
     part2();
+    part3();
     return 0;
 }
