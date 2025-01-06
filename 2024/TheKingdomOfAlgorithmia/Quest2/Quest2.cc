@@ -2,10 +2,8 @@
  * Everybody Codes
  * Quest 2
  */
-
 // WHY DID I PUNISH MYSELF? I WANT TO GET BETTER AT C/C++ AND IF THIS THE WAY TO DO IT, WELL OKAY!!!
 // CRYPTOCURRENCY IS A SCAM ... KIDS!
-
 // JESUS SAVES !!!
 
 #include <iostream>
@@ -26,7 +24,6 @@ std::vector<std::string> readWordsFromFile(const std::string& filename) {
         std::cerr << "Error opening file: " << filename << std::endl;
         return words;  // Return empty vector if file can't be opened
     }
-
     // Read the file word by word
     while (file >> word) {
         words.push_back(word);  // Add each word to the vector
@@ -35,7 +32,6 @@ std::vector<std::string> readWordsFromFile(const std::string& filename) {
     file.close();  // Close the file
     return words;  // Return the vector of words
 }
-
 /********************************************************************
  * Count how many times a specific word shows up in the sentence    *
  ********************************************************************/
@@ -113,7 +109,6 @@ void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words
  * The answers for part 2 and part 3 are given here where the bool  *
  * vector is counted for true answers.                              *
  ********************************************************************/
-
 int getCountForAnswers(vector<vector<bool>> nodeTable) {
     int count = 0;
     for (vector<bool> line : nodeTable) {
@@ -123,7 +118,6 @@ int getCountForAnswers(vector<vector<bool>> nodeTable) {
     }
     return count;
 }
-
 /*********************************************************************
  * Create an array with boolean variables. every valid letter is     *
  * determined by a true boolean, count them and you get to the       *
@@ -131,7 +125,6 @@ int getCountForAnswers(vector<vector<bool>> nodeTable) {
  *                                                                   *  
  * The main procedure is implemeted in _countNumberOfRunes above.    *
  *********************************************************************/
-
 int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSize, bool isPart3 ) {
     vector<vector<bool>> nodeTable, nodeTable2;
     for (int q = 0; q < Puzzle.size(); q++) {
@@ -142,11 +135,8 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
         nodeTable.push_back(newLine);
     
     }
-
     // revise nodeTable by reference
     _countNumberOfRunes(nodeTable,words,Puzzle,wordSize,isPart3, false);
-    
-    
     if (isPart3) {
       
         vector<string>Puzzle2;
