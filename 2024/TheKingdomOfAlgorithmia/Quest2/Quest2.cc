@@ -3,6 +3,11 @@
  * Quest 2
  */
 
+// WHY DID I PUNISH MYSELF? I WANT TO GET BETTER AT C/C++ AND IF THIS THE WAY TO DO IT, WELL OKAY!!!
+// CRYPTOCURRENCY IS A SCAM ... KIDS!
+
+// JESUS SAVES !!!
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -51,15 +56,18 @@ int countWordInSentence(string word, string sentence) {
     }
     return count;
 }
-/*********************************************************************
- * Create an array with boolean variables. every valid letter is     *
- * determined by a true boolean, count them and you get to the       *
- * answer for part 2.                                                *
- *********************************************************************/
+/**********************************************************************
+ * Determine a safe number so that the number does not go over        *
+ * creating a segmentation fault.                                     *
+ **********************************************************************/
 int revisedNumber (int number, int sentenceLimit) {
     return (number >= sentenceLimit) ? number - (sentenceLimit): number;
 }
-
+/***********************************************************************
+ * This is the main procedure that determines the valid spaces for all *
+ * of the runes to be counted. The Vector-vector-bool validRunes is    *
+ * passed by reference and updated.                                    *
+ ***********************************************************************/
 void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words, vector<string> Puzzle, int wordSize, bool isPart3, bool isSecondStepOfPart3) {
     int row = -1;
     for (string Sentence : Puzzle) {
@@ -101,6 +109,10 @@ void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words
         }
     }
 }
+/********************************************************************
+ * The answers for part 2 and part 3 are given here where the bool  *
+ * vector is counted for true answers.                              *
+ ********************************************************************/
 
 int getCountForAnswers(vector<vector<bool>> nodeTable) {
     int count = 0;
@@ -111,6 +123,14 @@ int getCountForAnswers(vector<vector<bool>> nodeTable) {
     }
     return count;
 }
+
+/*********************************************************************
+ * Create an array with boolean variables. every valid letter is     *
+ * determined by a true boolean, count them and you get to the       *
+ * answer for part 2 and Part 3.                                     *
+ *                                                                   *  
+ * The main procedure is implemeted in _countNumberOfRunes above.    *
+ *********************************************************************/
 
 int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSize, bool isPart3 ) {
     vector<vector<bool>> nodeTable, nodeTable2;
@@ -151,7 +171,9 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
         return getCountForAnswers(nodeTable);
     }
 }
-
+/*********************************************************************
+ * Let's get the answer for part one.                                *
+ *********************************************************************/
 void part1 () {
     string words[] = {"LOR","LL","SI","OR","IA","FF","NO"};
     string sentence = "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT, SUNT IN CULPA QUI OFFICIA DESERUNT MOLLIT ANIM ID EST LABORUM.";
@@ -161,7 +183,9 @@ void part1 () {
     }
     cout << "Part One: " << partOne << endl;
 }
-
+/**********************************************************************
+ * Let's get the answer for part two.                                 *
+ **********************************************************************/
 void part2 () {
     int partTwo = 0;
     vector<string> words = readWordsFromFile("Q2P2Words.txt");
@@ -170,7 +194,9 @@ void part2 () {
     partTwo = countNumberOfRunes(words,sentences,size,false);
     cout << "Part Two: " << partTwo << endl;
 }
-
+/***********************************************************************
+ * Let's get the answers for part three.                               *
+ ***********************************************************************/
 void part3() {
     int partThree = 0;
     vector<string>words = readWordsFromFile("part3Words.txt");
@@ -179,7 +205,9 @@ void part3() {
     partThree = countNumberOfRunes(words,puzzle,size,true);
     cout << "Part Three: " << partThree<< endl;
 }
-
+/************************************************************************
+ * THe main function                                                    *
+ ************************************************************************/
 int main() {
     part1();
     part2();
