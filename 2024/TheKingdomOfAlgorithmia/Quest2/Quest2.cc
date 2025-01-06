@@ -64,7 +64,7 @@ int revisedNumber (int number, int sentenceLimit) {
  * of the runes to be counted. The Vector-vector-bool validRunes is    *
  * passed by reference and updated.                                    *
  ***********************************************************************/
-void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words, vector<string> Puzzle, int wordSize, bool isPart3, bool isSecondStepOfPart3) {
+void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words, vector<string> Puzzle, bool isPart3, bool isSecondStepOfPart3) {
     int row = -1;
     for (string Sentence : Puzzle) {
         row++;
@@ -133,7 +133,7 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
         nodeTable.push_back(newLine);
     }
     // revise nodeTable by reference
-    _countNumberOfRunes(nodeTable,words,Puzzle,wordSize,isPart3, false);
+    _countNumberOfRunes(nodeTable,words,Puzzle,isPart3, false);
     if (isPart3) {
       
         vector<string>Puzzle2;
@@ -147,7 +147,7 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
             Puzzle2.push_back(newLine);
             nodeTable2.push_back(newBool);
         }
-        _countNumberOfRunes(nodeTable2,words,Puzzle2,wordSize,isPart3, true);
+        _countNumberOfRunes(nodeTable2,words,Puzzle2,isPart3, true);
         
     }
     if (isPart3) {
