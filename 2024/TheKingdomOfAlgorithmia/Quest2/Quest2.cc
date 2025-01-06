@@ -11,6 +11,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <chrono>
 using namespace std;
 /**************************************************************************
  * Read data from file and create data array from them                    *
@@ -195,8 +196,12 @@ void part3() {
  * THe main function                                                    *
  ************************************************************************/
 int main() {
+    auto start = chrono::high_resolution_clock::now();
     part1();
     part2();
     part3();
+    auto end = chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    cout << "Execution time: " << elapsed.count() << " seconds" << endl;
     return 0;
 }
