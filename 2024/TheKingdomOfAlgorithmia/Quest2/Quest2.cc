@@ -79,7 +79,6 @@ void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words
                     }
                     w++;
                 }
-
                 if (!wholeWord) {
                    int v = w - 1;
                    wholeWord = true;
@@ -89,7 +88,6 @@ void _countNumberOfRunes (vector<vector<bool>>& validRunes, vector<string> words
                         }
                         v--;
                     }
-
                 }
                 if (wholeWord) {
                     for (int i = x; i < x + w; i++ ) {
@@ -133,7 +131,6 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
             newLine.push_back(false);
         }
         nodeTable.push_back(newLine);
-    
     }
     // revise nodeTable by reference
     _countNumberOfRunes(nodeTable,words,Puzzle,wordSize,isPart3, false);
@@ -146,7 +143,6 @@ int countNumberOfRunes (vector<string> words, vector<string> Puzzle, int wordSiz
             for (int r = 0; r < Puzzle.size(); r++) {
                 newLine = newLine + Puzzle[r][q];
                 newBool.push_back(nodeTable[r][q]);
-                
             }
             Puzzle2.push_back(newLine);
             nodeTable2.push_back(newBool);
