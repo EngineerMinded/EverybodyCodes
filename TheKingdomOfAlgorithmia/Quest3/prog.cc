@@ -52,19 +52,53 @@ int puzzleNumeration(vector<string> puzzle, bool isPart3) {
         for (int u = 0; u < numPuzzle.size(); u++) {
             for (int v = 0; v < numPuzzle[u].size(); v++) {
                 if (numPuzzle[u][v] == changeNum) {
-                    if (((u == 0) || numPuzzle[u - 1][v] >= changeNum) &&
-                        ((u == numPuzzle.size() - 1) || numPuzzle[u + 1][v] >= changeNum ) &&
-                        ((v == 0) || numPuzzle[u][v + 1] >= changeNum ) &&
-                        ((v == numPuzzle[u].size() - 1) || numPuzzle[u][v - 1] >= changeNum )) {
-                        if (!isPart3 ||
-                            ((((u == 0) && (v == numPuzzle[u].size() - 1)) || numPuzzle[u - 1][v + 1] >= changeNum ) &&
-                             (((u == 0) && (v == 0)) ||numPuzzle[u - 1][v - 1] >= changeNum) &&
-                             (((u == numPuzzle.size() - 1) && (v == numPuzzle[u].size() - 1)) ||numPuzzle[u + 1][v + 1] >= changeNum) &&
-                             (((u == numPuzzle.size() - 1) && (v == 0)) || numPuzzle[u + 1][v - 1] >= changeNum) )) {
-                
-                            changesMade = true;
-                            numPuzzle[u][v] = changeNum + 1;
+                    bool validChange = true;
+                    if ((v == 0) || (u == 0) || (u == numPuzzle.size() - 1) || (v == numPuzzle[u].size() - 1)) validChange = false;
+                    if ((u > 0)) {
+                        if (numPuzzle[u - 1][v] < changeNum) {
+                            validChange = false;
+                        } 
+                    } 
+                    if (u < numPuzzle.size() - 1) {
+                        if (numPuzzle[u + 1][v] < changeNum ) {
+                            validChange = false;
                         }
+                    }
+                    if (v > 0) {
+                        if (numPuzzle[u][v + 1] < changeNum ) {
+                            validChange = false;
+                        }
+                    } 
+                    if (v < numPuzzle[u].size() - 1) {
+                        if (numPuzzle[u][v - 1] < changeNum ) {
+                            validChange = false;
+                        }
+                    }
+                    if (isPart3 ) {
+                        if ((u > 0) && (v < numPuzzle[u].size() - 1)) {
+                            if (numPuzzle[u - 1][v + 1] < changeNum ) {
+                                validChange = false;
+                            }
+                        }
+                        if ((u > 0) && (v > 0)) {
+                            if (numPuzzle[u - 1][v - 1] < changeNum) {
+                                validChange = false;
+                            }
+                        }
+                        if (((u < numPuzzle.size() - 1) && (v < numPuzzle[u].size() - 1))) {
+                            if (numPuzzle[u + 1][v + 1] < changeNum) {
+                                validChange = false;
+                            }
+                        }
+                        if (((u < numPuzzle.size() - 1) && (v > 0))) {
+                            if (numPuzzle[u + 1][v - 1] < changeNum) {
+                                validChange = false;
+                            } 
+                        }
+                    }
+                    if (validChange) {
+                        changesMade = true;
+                        numPuzzle[u][v] = changeNum + 1;
                     }
                 }
             }
@@ -88,6 +122,6 @@ int main() {
     // PART ONE
     cout << "Part One: " << puzzleNumeration(readWordsFromFile("p1.txt"), 0) << endl;
     cout << "part Two:"  << puzzleNumeration(readWordsFromFile("p2.txt"), 0) << endl;
-    //cout << "Part Three: "<< puzzleNumeration(readWordsFromFile("p3.txt"), 1) << endl;
+    cout << "Part Three: "<< puzzleNumeration(readWordsFromFile("p3.txt"), 1) << endl;
     return 0;
 }
