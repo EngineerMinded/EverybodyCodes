@@ -114,11 +114,9 @@ int puzzleNumeration(vector<string> puzzle, bool isPart3) {
    
     return count;
 }
-
 /*******************************************************************
  * The Main Function                                               *
  *******************************************************************/
-
 int main() {
     // PART ONE
     cout << "Part One: " << puzzleNumeration(readWordsFromFile("p1.txt"), 0) << endl;
