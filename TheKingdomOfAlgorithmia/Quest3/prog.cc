@@ -37,6 +37,7 @@ std::vector<std::string> readWordsFromFile(const std::string& filename) {
  * and tally the numbers.                                               *
  ************************************************************************/
 int puzzleNumeration(vector<string> puzzle, bool isPart3) {
+    // Initialize a 2 Dimensional integer vector and fill it with ones and zeroes depending on the input
     vector<vector<int>> numPuzzle;
     for (string line: puzzle) {
         vector<int> newPuzzleLine;
@@ -46,6 +47,7 @@ int puzzleNumeration(vector<string> puzzle, bool isPart3) {
         }
         numPuzzle.push_back(newPuzzleLine);
     }
+    // raise all of the required numbers for every cycle
     bool changesMade = true; int changeNum = 0; 
     while (changesMade)  {
         changesMade = false; 
@@ -105,13 +107,13 @@ int puzzleNumeration(vector<string> puzzle, bool isPart3) {
             }
         }
     }
+    // Count all numbers and add them together. This is your answer.
     int count = 0; 
     for (vector<int> d : numPuzzle) {
         for (int e : d) {
             count = count + e; 
         }
     }
-   
     return count;
 }
 /*******************************************************************
@@ -119,8 +121,8 @@ int puzzleNumeration(vector<string> puzzle, bool isPart3) {
  *******************************************************************/
 int main() {
     // PART ONE
-    cout << "Part One: " << puzzleNumeration(readWordsFromFile("p1.txt"), 0) << endl;
-    cout << "part Two:"  << puzzleNumeration(readWordsFromFile("p2.txt"), 0) << endl;
+    cout << "Part One: "  << puzzleNumeration(readWordsFromFile("p1.txt"), 0) << endl;
+    cout << "part Two: "   << puzzleNumeration(readWordsFromFile("p2.txt"), 0) << endl;
     cout << "Part Three: "<< puzzleNumeration(readWordsFromFile("p3.txt"), 1) << endl;
     return 0;
 }
