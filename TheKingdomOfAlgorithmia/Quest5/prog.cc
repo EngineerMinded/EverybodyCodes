@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+using namespace std;
 
 /*****************************************
  * Read the file data                    *
@@ -31,7 +32,27 @@ std::vector<std::vector<int> > readFileTo2DArray(const std::string& filename) {
         result.push_back(row);  // Add the row to the result 2D vector
     }
     file.close();  // Close the file after reading
-    return result;  // Return the 2D array
+    vector<vector<int> > revised;
+    for (int x = 0; x < result.size(); x++) {
+        vector<int> newLine;
+        newLine.push_back(result[0][x]);
+        for (int y = 1; y < result[x].size(); y++) {
+            newLine.push_back(result[y][x]);
+        }
+        revised.push_back(newLine);
+    }
+    return revised;  // Return the 2D array
+
+}
+
+void newRound(vector<vector<int> > dancers, int round ) {
+    // Prevent segmentation faults
+    while (round > dancers.size()) {
+        round -= dancers.size();
+    }
+
+
+
 }
 
 int main() {
