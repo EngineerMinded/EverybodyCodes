@@ -45,14 +45,28 @@ std::vector<std::vector<int> > readFileTo2DArray(const std::string& filename) {
 
 }
 
-void newRound(vector<vector<int> > dancers, int round ) {
-    // Prevent segmentation faults
-    while (round > dancers.size()) {
-        round -= dancers.size();
+int getRoundNumber(int round, int max) {
+    while (round > max) {
+        round -= max;
     }
+    return round;
+}
+
+int clapSequence(int clapperNumber, int numberOfGroupInLine) {
+    
+}
+
+void newRound(vector<vector<int> > dancers, int round ) {
+    int rounds = 0;
+    while (rounds < round) {
+        // get the number that will be on that round
+        int roundNumber = dancers[getRoundNumber(rounds,dancers.size())][0];
+        // erase the number from that list
+        dancers[getRoundNumber(rounds, dancers.size())].erase(dancers[getRoundNumber(rounds, dancers.size())].begin());
 
 
-
+        rounds++;
+    }
 }
 
 int main() {
