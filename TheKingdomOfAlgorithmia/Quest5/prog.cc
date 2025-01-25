@@ -1,7 +1,11 @@
 /* Wayne Mack
  * Everybody Codes
  * Quest 5
+ * 
+ * ver 1.0 Part One Correct
  */
+
+
 
 #include <iostream>
 #include <fstream>
@@ -9,6 +13,26 @@
 #include <vector>
 #include <string>
 using namespace std;
+
+
+// Part 1 functions
+std::vector<std::vector<int> > readFileTo2DArray(const std::string& );
+int nextNumberInSequence(int , int );
+void insertNumberInRightPlace(vector<int>& , int);
+void stepMove (vector<vector<int>>&, int );
+void part1Step(vector<vector<int>>&, int);
+void evaluate (vector<vector<int>>);
+void partAnswer(vector<vector<int>>);
+
+int main() {
+    std::string filename = "p1.txt";  // Example file name
+    std::vector<std::vector<int> > data = readFileTo2DArray(filename);
+
+    // Display the contents of the 2D array
+    evaluate(data);
+    part1Step(data,10);
+    return 0;
+}
 
 /*****************************************
  * Read the file data                    *
@@ -33,53 +57,84 @@ std::vector<std::vector<int> > readFileTo2DArray(const std::string& filename) {
     }
     file.close();  // Close the file after reading
     vector<vector<int> > revised;
-    for (int x = 0; x < result.size(); x++) {
+    for (int x = 0; x < result[0].size(); x++) {
         vector<int> newLine;
         newLine.push_back(result[0][x]);
-        for (int y = 1; y < result[x].size(); y++) {
+        for (int y = 1; y < result.size(); y++) {
             newLine.push_back(result[y][x]);
         }
         revised.push_back(newLine);
     }
+    evaluate (result);
     return revised;  // Return the 2D array
 
 }
 
-int getRoundNumber(int round, int max) {
-    while (round > max) {
-        round -= max;
+int nextNumberInSequence(int rowsize, int thisNumber) {
+    bool goInReverse = false;
+    int targetNumber = 0;
+    for (int x = 1; x < thisNumber; x++) {
+        if (targetNumber == 0 && goInReverse) {
+            goInReverse = false;
+        }
+        else if (targetNumber == rowsize && !goInReverse) {
+            goInReverse = true;
+        }
+        else {
+            goInReverse ? targetNumber = targetNumber - 1 : targetNumber = targetNumber + 1;
+        }
     }
-    return round;
+    return (targetNumber > rowsize) ? targetNumber - 1: targetNumber;
 }
 
-int clapSequence(int clapperNumber, int numberOfGroupInLine) {
-    
+void insertNumberInRightPlace(vector<int>& row, int valueToInsert) {
+    // insert the number in the specific row and pass it by reference
+    row.insert(row.begin() + nextNumberInSequence(row.size(), valueToInsert), valueToInsert);
 }
 
-void newRound(vector<vector<int> > dancers, int round ) {
-    int rounds = 0;
-    while (rounds < round) {
-        // get the number that will be on that round
-        int roundNumber = dancers[getRoundNumber(rounds,dancers.size())][0];
-        // erase the number from that list
-        dancers[getRoundNumber(rounds, dancers.size())].erase(dancers[getRoundNumber(rounds, dancers.size())].begin());
+void stepMove (vector<vector<int>>& dancer, int stepToTake ) {
+    // find the first value of the row you want and set it as an integer
+    int nextValue = dancer[stepToTake][0];
+    // remove that item from the dataset
+    dancer[stepToTake].erase(dancer[stepToTake].begin() + 0);
+    // designate next row as the row to add the value too. if at the end, add it to the first one.
+    int nextRow = (stepToTake < dancer.size() - 1) ? stepToTake + 1 : 0;
+    // determine where to insert it in the next row and, insert it.
+    insertNumberInRightPlace(dancer[nextRow],nextValue);
 
+}
 
-        rounds++;
+void part1Step(vector<vector<int>>& dancers, int numberOfSteps) {
+    for (int n = 0; n < numberOfSteps; n++) {
+        int nextStep = n;
+        while (nextStep >= dancers.size()) {
+            nextStep = nextStep - dancers.size();
+        }
+        
+        stepMove(dancers,nextStep);
+        cout << "Step: " << n + 1 << " : ";
+        partAnswer(dancers);
+        cout << endl;
+        evaluate(dancers);
     }
 }
 
-int main() {
-    std::string filename = "p1example.txt";  // Example file name
-    std::vector<std::vector<int> > data = readFileTo2DArray(filename);
+void partAnswer(vector<vector<int>> d) {
+    int answer = 0;
+    for (int x = 0; x < d.size(); x++) {
+        answer = answer * 10;
+        answer = answer + d[x][0];
+    }
+    cout << answer;
+}
 
-    // Display the contents of the 2D array
+void evaluate (vector<vector<int>> data) {
     for (const auto& row : data) {
         for (int num : row) {
             std::cout << num << " ";
         }
         std::cout << std::endl;
     }
-
-    return 0;
+    cout << endl;
 }
+
