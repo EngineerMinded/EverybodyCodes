@@ -3,7 +3,7 @@
  * Quest 5
  * 
  * ver 1.0 Part One Correct
- * ver 1.5 Part 2 Wrong Answer
+ * ver 1.5 Part 2 very long to get answer
  */
 
 
@@ -26,8 +26,8 @@ void evaluate (vector<vector<int>>);
 // part 1 functions
 int partAnswer(vector<vector<int>>);
 // Part 2 functions
-int numberHasBeenCountedNthNumberOfTimes(vector<vector<int>>, int) ;
-int part2Step(vector<vector<int>>& , int);
+unsigned long long numberHasBeenCountedNthNumberOfTimes(vector<vector<int>>, int) ;
+unsigned long long part2Step(vector<vector<int>>& , int);
 void insertIntoNumberCounter(vector<vector<int>>& , int);
 
 int main() {
@@ -37,8 +37,9 @@ int main() {
     // Display the contents of the 2D array
     evaluate(data);
     part1Step(data,10);
-    filename = "p2example.txt";
+    filename = "p2.txt";
     vector<vector<int>> part2 = readFileTo2DArray(filename);
+    //part1Step(part2,10);
     cout << endl << "Part 2 Answer :" << part2Step(part2, 2024);
     return 0;
 }
@@ -86,14 +87,14 @@ int nextNumberInSequence(int rowsize, int thisNumber) {
         if (targetNumber == 0 && goInReverse) {
             goInReverse = false;
         }
-        else if (targetNumber == rowsize && !goInReverse) {
+        else if (targetNumber == rowsize -1 && !goInReverse) {
             goInReverse = true;
         }
         else {
             goInReverse ? targetNumber = targetNumber - 1 : targetNumber = targetNumber + 1;
         }
     }
-    return (targetNumber > rowsize) ? targetNumber - 1: targetNumber;
+    return goInReverse? targetNumber + 1 : targetNumber;
 }
 
 void insertNumberInRightPlace(vector<int>& row, int valueToInsert) {
@@ -126,23 +127,24 @@ void part1Step(vector<vector<int>>& dancers, int numberOfSteps) {
         evaluate(dancers);
     }
 }
-int numberHasBeenCountedNthNumberOfTimes(vector<vector<int>>numberList, int numberOfTimesToBeounted) {
+unsigned long long numberHasBeenCountedNthNumberOfTimes(vector<vector<int>>numberList, int numberOfTimesToBeCounted) {
     int highestNumber = 0;
     for (vector<int> numberSet : numberList) {
-        if (numberSet[1] == 2048) {
+        if (numberSet[1] == numberOfTimesToBeCounted) {
+            cout << "Winning Number :" << numberSet[0] << endl;
             return numberSet[0];
         }
         else if (numberSet[1] > highestNumber) {
             highestNumber = numberSet[1];
         }
     }
-    cout << endl << highestNumber;
+    cout << endl << "Highest Number " << highestNumber << " List Size" << numberList.size()<< " ";
     return 0;
 }
 
 void insertIntoNumberCounter(vector<vector<int>>& numberList, int numberToInsert) {
     bool numberInserted = false;
-    for (int x = 0; x < numberList.size(); x++) {
+    for (int x = 0; x < numberList.size() && !numberInserted; x++) {
         if (numberToInsert == numberList[x][0]) {
             numberList[x][1] = numberList[x][1] + 1;
             numberInserted = true;
@@ -155,7 +157,7 @@ void insertIntoNumberCounter(vector<vector<int>>& numberList, int numberToInsert
 }
 
 
-int part2Step(vector<vector<int>>& dancers, int numberOfTimesAnumberHasToBeCounted) {
+unsigned long long part2Step(vector<vector<int>>& dancers, int numberOfTimesAnumberHasToBeCounted) {
     vector<vector<int>> numberCounter;
     // TO DO: start right here
     int n = 0;
@@ -164,6 +166,10 @@ int part2Step(vector<vector<int>>& dancers, int numberOfTimesAnumberHasToBeCount
         while (nextStep >= dancers.size()) {
             nextStep = nextStep - dancers.size();
         }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        // THE NUMBER LIST HAS TO HAVE A PLACE WHERE THE NUMBER LOOPS ITSELF. FIND OUT WHERE THE NUMBERS //
+        // LOOPS ITSELF AND TALLY UP THE NUMBER LIST ONLY BASED ON THA                                   //
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
         
         stepMove(dancers,nextStep);
         cout << "Step: " << n + 1 << " : " << partAnswer(dancers);
@@ -177,8 +183,14 @@ int part2Step(vector<vector<int>>& dancers, int numberOfTimesAnumberHasToBeCount
 int partAnswer(vector<vector<int>> d) {
     int answer = 0;
     for (int x = 0; x < d.size(); x++) {
+        int r = d[x][0];
+        while ( r > 9) {
+            answer = answer * 10;
+            answer = answer + r;
+            r = r % 10;
+        }
         answer = answer * 10;
-        answer = answer + d[x][0];
+        answer = answer + r;
     }
     return answer;
 }
