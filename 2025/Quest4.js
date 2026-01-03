@@ -47,7 +47,6 @@ function readNumberPairs(filename) {
     return result;
 }
 
-
 function getdoubleGearRPM( speed, gears) {
     for (let i = 1;  i < gears.length; i++) {
         var gear1B = gears[i - 1][1];
@@ -58,15 +57,12 @@ function getdoubleGearRPM( speed, gears) {
     return speed;
 }
 
-
-
 function getGearRPM( speed, gears, part1) {
     if (part1 == 1) {
         for (let i = gears.length - 1; i > 0; i--) {
             var gear2 = gears[i - 1]; var gear1 = gears[i];
             var ratio  = gear1 / gear2;
             speed = speed * ratio;
-        
         }
     }
     else {
@@ -74,10 +70,8 @@ function getGearRPM( speed, gears, part1) {
             var gear1 = gears[i - 1]; var gear2 = gears[i];
             var ratio  = gear1 / gear2;
             speed = speed * ratio;
-           
         }
     }
-    console.log("Final Speed: ", speed);
     return speed % 1 == 0?  speed : speed + 1;
 }
 
@@ -100,9 +94,7 @@ console.log("Input Part 2:", parseInt(getGearRPM(10000000000000 , input2, 1)));
 const sample3 = readNumberPairs('part3Sample.txt');
 const sample3A = readNumberPairs('part3Sample2.txt');
 const puzzle3 = readNumberPairs('puzzle3.txt');
-sample3A.forEach( pair => {
-    console.log(pair);
-});
+
 console.log("Sample 3 Part 3:", parseInt(getdoubleGearRPM(100 , sample3)));
 console.log("Sample 3A Part 3:", parseInt(getdoubleGearRPM(100 , sample3A)));
 console.log("Puzzle 3 Part 3:", parseInt(getdoubleGearRPM(100 , puzzle3)));
