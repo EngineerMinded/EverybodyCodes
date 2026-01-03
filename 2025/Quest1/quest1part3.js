@@ -1,3 +1,5 @@
+// NOTE: last name is the answer
+
 const fs = require('fs');
 const readline = require('readline');
 
