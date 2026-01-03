@@ -76,7 +76,7 @@ long long partTwo(long long firstCornerX , long long firstCornerY, long long dis
     return count;
 }
 
-long long main () {
+int main () {
 
     struct Tuple P1X = PartOne(0, 0, 25,9,10,3, 0);
     struct Tuple P1 = PartOne(0, 0, 141, 53, 10, 3, 0);
