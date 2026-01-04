@@ -1,0 +1,68 @@
+// Wayne Mack
+// Everybody codes
+// Quest 5: Fishbone Swords
+
+////////////////////////////////////
+// PART 1 & 2 DONE                //
+////////////////////////////////////
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include "Fishbone.hh"
+#include "Sword.hh"
+using namespace std;
+
+std::vector<std::string> readLines(const std::string& filename) {
+    std::vector<std::string> lines;
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file: " + filename);
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        lines.push_back(line);
+    }
+
+    return lines;
+}
+
+long long part2(string filename) {
+    vector<long long> finalValues;
+    vector<string> p2Examples = readLines(filename);
+    for (const string& line : p2Examples) {
+        Sword S = Sword();
+        S.manuallyinsertData(line);
+        Fishbone F = Fishbone();
+        F.add(S);
+        finalValues.push_back(F.getStraightValue());
+    
+    }
+    long long highest = -1, lowest =  9223372036854775800;
+    for (long long val : finalValues) {
+        if (val > highest) highest = val;
+        if (val < lowest ) lowest = val;
+    }
+    return highest - lowest;
+}
+
+int main() {
+    //PART1
+    Sword part1Sample = Sword("part1Sample.txt");
+    Sword part1Puzzle = Sword("part1Puzzle.txt");
+    // Execute Sample
+    Fishbone p1Sample = Fishbone();
+    p1Sample.add(part1Sample);
+    cout << p1Sample.getStraightValue() << endl; 
+    // Execute Puzzle
+    Fishbone p1Puzzle = Fishbone();
+    p1Puzzle.add(part1Puzzle);
+    cout << p1Puzzle.getStraightValue() << endl;
+
+    //PART2
+    cout << "Part 2 Sample " << part2("part2Sample.txt") << endl;
+    cout << "Part 2 Puzzle " << part2("part2Puzzle.txt") << endl;
+}
