@@ -3,7 +3,7 @@
 // Quest 5: Fishbone Swords
 
 ////////////////////////////////////
-// PART 1 & 2 DONE                //
+// ALL PARTS SOLVED               //
 ////////////////////////////////////
 
 #include <iostream>
