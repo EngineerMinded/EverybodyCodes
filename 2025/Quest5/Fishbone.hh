@@ -61,6 +61,26 @@ public:
             }
         }
     }
+
+    int isBetterThan(Fishbone other) {
+        vector<long long> myValues = this->getSwordStrengthValue();
+        vector<long long> otherValues = other.getSwordStrengthValue();
+        // Step 1: Determine by longer length
+        if (myValues.size() > otherValues.size()) return 1;
+        if (myValues.size() < otherValues.size()) return 0;
+        // Step 2: If lengths are equal, compare straight values
+        long long myStraight = this->getStraightValue();
+        long long otherStraight = other.getStraightValue();
+        if (myStraight > otherStraight) return 1;
+        if (myStraight < otherStraight) return 0;
+        // Step 3: Compare values one by one
+        for (int i = 0; i < min(myValues.size(), otherValues.size()); i++) {
+            if (myValues[i] > otherValues[i]) return 1;
+            if (myValues[i] < otherValues[i]) return 0;
+        }
+        // at this point they are equal and neither is better
+        return 1;
+    }
 private:
     int power(int base, int exp) {
         int result = 1;
@@ -70,22 +90,42 @@ private:
         return result;
     }
 
-    long long _getStraightValue(long long accumulated) {
-        int exponent = 1, counter = this->value;
+    long long accumulatedNumber(long long currentValue, long long next) {
+        int exponent = 1, counter = next;
         while (counter > 9) {
             exponent++;
             counter /= 10;
-        }
-        accumulated = (accumulated * (power(10,exponent))) + this->value;
+        }   
+        return (currentValue * (power(10,exponent))) + next;
+    }
+
+    long long getStraightValue(long long accumulated) {
+        accumulated = accumulatedNumber(accumulated, this->value);
         if (this->next != nullptr) {
-            return this->next->_getStraightValue(accumulated);
+            return this->next->getStraightValue(accumulated);
         } else {
             return accumulated;
         }
     }
+
+    void getSwordStrengthValue(vector<long long>& values) {
+        long long currentValue = 0;
+        if (this->left != -1) currentValue = accumulatedNumber(currentValue, this->left);
+        if (this->value != -1) currentValue = accumulatedNumber(currentValue, this->value);
+        if (this->right != -1) currentValue = accumulatedNumber(currentValue, this->right);
+        values.push_back(currentValue);
+        if (this->next != nullptr) this->next->getSwordStrengthValue(values);
+    }
+
 public:
     long long getStraightValue() {
-        return _getStraightValue(0);
+        return getStraightValue(0);
+    }
+
+    vector <long long> getSwordStrengthValue() {
+        vector<long long> values;
+        getSwordStrengthValue(values);
+        return values;
     }
 
     void print() {
@@ -94,7 +134,6 @@ public:
             this->next->print();
         }
     }   
-
 };
 
 #endif /* FISHBONE_HH */

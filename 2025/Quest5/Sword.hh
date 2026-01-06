@@ -47,7 +47,6 @@ class Sword {
         }
 
     }
-
     std::vector<int> parseCommaNumbers(const std::string& input) {
         std::vector<int> values;
 
@@ -66,7 +65,6 @@ class Sword {
         return values;
     }
 
-
     void manuallyinsertData(string metaData) {
         //cout << "Inserting Data: " << metaData << endl;
         vector<int> data = parseCommaNumbers(metaData);
@@ -74,12 +72,7 @@ class Sword {
         for (int m = 1; m < data.size(); m++) {
             this->values.push_back(data[m]);
         }
-        //for (int val : this->values) {
-        //    cout << val << " ";
-        //}   cout << endl;
-
     }
-
 };
 
 #endif /* SWORD_HH */

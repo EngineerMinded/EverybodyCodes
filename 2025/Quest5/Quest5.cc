@@ -12,6 +12,7 @@
 #include <fstream>
 #include "Fishbone.hh"
 #include "Sword.hh"
+#include "SwordList.hh"
 using namespace std;
 
 std::vector<std::string> readLines(const std::string& filename) {
@@ -49,6 +50,44 @@ long long part2(string filename) {
     return highest - lowest;
 }
 
+SwordList sortByStrength(SwordList unsorted) {
+    SwordList sorted = SwordList();
+    vector<bool> added(unsorted.swords.size(), false);
+    for (int i = 0; i < unsorted.swords.size(); i++) {
+        int bestIndex = -1;
+        for (int j = 0; j < unsorted.swords.size(); j++) {
+            if (added[j]) continue;
+            if (bestIndex == -1 || unsorted.fishbones[j].isBetterThan(unsorted.fishbones[bestIndex]) ) {
+                bestIndex = j;
+            }
+        }
+        sorted.add(unsorted.swords[bestIndex]);
+        added[bestIndex] = true;
+    }
+    return sorted;
+}
+
+long long part3(string filename, int showValues) {
+    SwordList SL = SwordList();
+    vector<string> p3Examples = readLines(filename);
+    for (const string& line : p3Examples) {
+        Sword S = Sword();
+        S.manuallyinsertData(line);
+        SL.add(S);
+    }
+    if (showValues) SL.print();
+    SwordList sorted = sortByStrength(SL);
+    if (showValues) cout << "Sorted Swords by Strength:" << endl;
+    if (showValues) sorted.print();
+    int returnThis = 0;
+    for (int i = 0; i < sorted.swords.size(); i++) {
+        returnThis += (sorted.swords[i].headValue * (SL.swords[i].headValue));
+    }
+    return returnThis;
+}
+
+
+
 int main() {
     //PART1
     Sword part1Sample = Sword("part1Sample.txt");
@@ -65,4 +104,8 @@ int main() {
     //PART2
     cout << "Part 2 Sample " << part2("part2Sample.txt") << endl;
     cout << "Part 2 Puzzle " << part2("part2Puzzle.txt") << endl;
+
+    //PART3
+    cout << "Part 3 Sample " << part3("part3Sample.txt",1)<< endl;
+    cout << "Part 3 Puzzle " << part3("part3Puzzle.txt",0)<< endl;
 }
