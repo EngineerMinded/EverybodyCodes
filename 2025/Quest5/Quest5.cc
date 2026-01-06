@@ -40,7 +40,6 @@ long long part2(string filename) {
         Fishbone F = Fishbone();
         F.add(S);
         finalValues.push_back(F.getStraightValue());
-    
     }
     long long highest = -1, lowest =  9223372036854775800;
     for (long long val : finalValues) {
@@ -85,8 +84,6 @@ long long part3(string filename, int showValues) {
     }
     return returnThis;
 }
-
-
 
 int main() {
     //PART1
