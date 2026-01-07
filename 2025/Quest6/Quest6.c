@@ -1,0 +1,85 @@
+// Wayne Mack
+// Everybody Codes
+// Quest 6 - Novice Mentor Pairs
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int getNoviceMentorPairs (char* set, int checkExclusive, char checkThisOne) {
+    int count = 0;
+    for (int i = 0; set[i] != '\0'; i++) {
+        if ((checkExclusive == 0 && set[i] > 64 && set[i] < 91) || (checkExclusive == 1 && set[i] == checkThisOne)) {
+            for (int j = i; set[j] != '\0'; j++) {
+                if (set[j] == set[i] + 32) {
+                    count++;
+                }   
+            }
+        }
+    }
+    return count;
+}
+
+char* repeat_string(const char *src, int times) {
+    if (times <= 0 || src == NULL) {
+        return NULL;
+    }
+
+    size_t len = strlen(src);
+    size_t total_len = len * times;
+
+    // allocate memory for repeated string + null terminator
+    char *result = malloc(total_len + 1);
+    if (!result) {
+        return NULL; // allocation failed
+    }
+
+    char *p = result;
+
+    // copy the string 'times' times
+    for (int i = 0; i < times; i++) {
+        memcpy(p, src, len);
+        p += len;
+    }
+
+    result[total_len] = '\0';
+    return result;
+}
+
+int getNoviceMentorPairs2 (char* set, int repeatStringThisManyTimes, int stayWithinThisRange) {
+    int count = 0;
+    int len = 0;
+    char* extendedSet = repeat_string(set, repeatStringThisManyTimes);
+    for (int i = 0; extendedSet[i] != '\0'; i++) {
+        if (extendedSet[i] > 96 && extendedSet[i] < 123) {
+            for (int j = i + 1; j < i + stayWithinThisRange + 1 && extendedSet[j] != '\0'; j++) {
+                if (extendedSet[j] == extendedSet[i] - 32) {
+                    count++;
+                }   
+            }
+            for (int j = i - 1; j > i - stayWithinThisRange - 1 && j >= 0; j--) {
+                if (extendedSet[j] == extendedSet[i] - 32) {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    char sample1[] = "AaAaa";
+    char sample2[] = "ABabACacBCbca";
+    char puzzle1[] = "ABCcAcABAbacbCbcacBcBbCaCCBaAcCCcBccaabBAAAaccACbCBbCBAacBbCacCcBBaCCbBBCBCCBbaacbCAcaaBAaAbaCBcccBc";
+    char puzzle2[] = "ABCbcCaacaaBCAaabCCacBAbcBAAaCbACBBbaAAbcAbABBCBbaBcbaaAccbBCBACAAcBBAcBacCaBCABbacBBccBaaCCaabABcaAbBccbbCAbBCccbBCCcbCcbCbbbCcAaBbBaCAaABbCCCCcBbCcCaACCCbCcAbcCAbbcACcbbBCacabBcbcAcBACCCBbAbBacabbbCAcAbaCcAaAcCbcaBBcbCAaBBCAAAACacaabBcBaabbcAaaAbAAAbCAcbCCBCBbcCbACaAccABAACbAACBbAaAcCAABBCACCbaAbC";
+    char sample3[] = "AABCBABCABCabcabcABCCBAACBCa";
+    char puzzle3[] = "bBBbaCAABCABbabaBCBAcBbBBCbBaCCACaBacBbabbcBaCCcbAbccbCACAaBacaacBbBaaCAacaAcCcaaCaCAAcbcCacCbaaacBBbbbbACcbcABBacbbaCbcABBCccCaCaCaCCcbbBBBaBBAaBCCbAaCcBCbaCBbaCCBAaabAaBcABccBAbBacbBACaAbcAcACbCBCCCbaAABCbAACCAcBAbaACcACccAaBaaabCBcbCAAacaaabbCBacbabBcBacABAAbcBCCcACAcbABccbBCAaCbabCAACaCbaCabcACAbbCcAaAcaCAAcbcAabAaCacbBCbCCCaaCBBACcBbbaBcbcCBccAcbCcBCcBcBBCbacCCcCbbBccaAaAABCbcbCBcaBbaccaCBCbbaBBAbCCBbACaCBCbCCcaBCaacBbBcBcAaBCCaacABBcbAbBCbBBAcBcAbcAAbAbcBcbbcCCCACCcCCAaabacbbBaBAAbCCCcBbcBaaBCbbCBbBACAccCCAAaAcAaaAbBaAbAcbCaBaaCCAaCaCcBAAAbAcaBacBAabbBbcCcAAAccAbbaBcaacAcaCcCABaaCcCAbaCcBAACaACcbBbaAACAbccbbcaCbBCBCBaBbbBAbbaaBCCBAaacbaCBAbAcbACAaABBAbACcBabBAcAaaaACcAaaacaBBBAbaacbAcCcACabacBBabcBcBCcCBaCBcccaccBCABABbBCBAbaAacaABAAacaBbAabcAcAcAaaCABbCBABbCcBcCacbCBcaCACcbbbAaBaCaaACcacAaBACbCacbbcBaaABcBcbbcBCBcCbAbcBAbaCBBccAaCaaABcabaaBBcACCcAabCcCAaAcacABaaaaCbcABcaCccbBcCcacaBBCBCBBaaaBbcAABbBBCaaCbacAcACCaccBcCAcaBaABAAbBBBaACbbAaBCBCbBBaCabbabbaBBBcCAabccAAbcbCaBCACcaCCbCCCbACaacCbacaAAbcbbAabcacbaacbcbaccBBBacaAAbCCBBBbacacabCbcaAbaBCcbBbcacCcACAabcCABbABabBBbAcCAaCAACbAAbacBcbBbBaccCbaaAbbbBBACBCaBccAaAaCbABcabABBABaAACbBBcaCBaAaabCBACaaACBbaBbccCBBBbACBBaBcAbcAcbaAcaCBaaBcBCAbcABCCAbBAaBaCaCcAbBbBBAbBCcCcacBABAaACbbcCCcccacCbaAAbaaCAbBAaBBbCcccAAaCaCcbacaAacCBaaBAccbccBBBACCAAAbabaaBAaCcbcBcAbCcaaBAabCcacBbcCBCcCcbCBBBcCAcacaBABCBcabaAcCaCCBBcaabcaaaCaaCabBaCACbAbABCACCaBABcbBAccAbAAABaABAbcACbbcAacCCBBCAaABABaAcCCCaCABacbBaCbCabaBaCCaAAabaBaccBabACACCBACCCbAaAabABBBCCaaAccbBccbcABCbAAccACbBbBcBbbccAcAABBbaacAaacAbbCCCcacAaaBabcBCbCBAbAcbCBaBcBCAbacACcbCCcBbaBcBBcCbcBaBcaaBAacbaBCbccbccABcbBBCCbCbCbAbbACBCcBbbCCbAccBbACBbBCbCBAbbCBcccBcCccAAbBaacaaCbCBBCcbbAcacBcbBCcAacaaaaCCBaBbaaBaaccaacAaBBbcBAbBBcBcAaAAbcCcBcAcbaCCCCAbaAaccBAbbBbCaCcacCCacCbcabCBAAaAcCCBCAAcAbCccBCbacAaAbaAcAaCCAaCAcBaabcCCBCacaBCCabcbaaAcAbbabcacABAabBAbaCbcabcBAbaCcCbaBbCABBcaCaBbCcACBcBbAAcAabbaaBaAcACCcCcbAACCCbBAbbAaaabcacbBBbaAaaBcAcccCAbcaACbcabbacBCcbAAcAbCcaCcCbBAbbbAaCACAACacBabAaCacbcBBABACCaaBcaBAbaaaCAAcaCaBBaCABccbcAAcccCCAaCAacCBBabaabAcaCcCcbCAcbBAcCaBCCbcCbcBabBAbAAbAcACCAACcbbCCbbCBACCbcCCBcbCbBBBbbBaaBbCACBBBCaaCbCaCcabaaAcACbabcbcCACbcAacBBAAaacAaABbAbABbBAcacBaBacaacAaAAbBCbBCBcABCaccAaacbBAAbbaBBcCcABAAaBBcCCBAbAcBbABAcCacBAAbBcABBBBabcAABcaaCABAcAbAbcbcBBBccAAcccCCBbcabbaABaCabCBACCCBCABaAaBacBBBBbcbCCBbcCAACacbBBaccaBCacCacccBCBcACAcCbbACCCcCBccCABACAbcCbACBbccCBcCaBbaAbcaCBCcCCabcAACbCcBaBBbcbBabaAbaCbacBBBCaCCBCBbAACCBaBBCBBACAaACCcbCCCCcabcaBBAaCccacbcCcbAbBbAaACaCACCBbCCcCACabAAcBcAcBbBccbaCBBbcCBaBccbcbbCAAaaacbbaAacBaabbaBCcbcABabBCbAbBBCAcaaBaAcAaACACBcAacbcabaCcABcbBbcaaBAcCbCcaCCbBBAAAacBCbBbBcbCCAaAAAACBBCBBcaBcaBAaACaacbaCcacaBAaacCBcCBbCBAABAbCCBbBbCaBCabCaabBabaacaaBAcabACbBbBCBBaAabaBBACcAbcbaabAABBcCBabbAcACcaCCAbcaBccBACabBaaBabcccCcBcbaBAcbBbCCcCBCccacBabBbcaAAaCaccbaBabcbcACcBBacBcACAbAAcaBcACBBCABBCAcBCaAbaAcbAcaabaABcCBaAAbbCAcCCcbbaBCACCbAcabacCCAcccCBCABbbcBcBCbbaBABBacbaaacbBaaCBcCACCBCAbCaccAbBCAcAaAAbAaCbAAbCcaacbCCcACcAaacCAaBaBABCCcCccAbACbbAACcbCbAccacCAcCCbCbACAbcBAbcABaccCBBbCbACABbCbBCAAacacAaccAbAaBCaccBcCbacAbCbccabbCacCCBaBacBacAACBBaCABaCAcabBAaCACAACCBCCBccBCAcACbCBABBCCcABbcCacABAcACBCCbACcBCacBCcBCcBabbcBaCAabACBAaAABBAcbBaaAcCcBaAAaCBbCcaAaBACABCbcBcCBbAbACAcAcCBCbAbbabbBCbbcccacBCAacCcCcCcAAcBaCbaCaAccAcaCcABACBCCCAABcBCABaCbBcAabbaBAacCBcbcACACCBaBbCaBbACbAAcBbBaccaccaCbBBCCacBcBCABBbaaBcCCABCacCbCaCbCCBacBaCbAabcBbCBBBbBcCCCaAcCBBAbbAbCBCAAcCACBbaCcCbCbBacbacACbabbaBaBcaaAACABBbBCBBcabcaCAABBCbaBbaccBAbbCbCcbCCaacaBCbBCcCaAAAccabcbabCaBCCCCbbacBCaAAACaAbCCCccCAcBBAaAbcBaAacAAbcCAAaAaAccCabBcbABacABbaCbcbBaCabcaaacccAAaCBbAAbacABbCBAbCAcbacCbCcbaccBaABaaBbCCBcAABCBcabBbAabBbcBbBCcaBBcbaCcaBaCaCBAACBCaBACBABbabAaBbcCCaBBbaaaaACBCaCBBbBcCacccABAabcbbBBaaCbCbCAcaAbAAABAABAAbCbCacCbcCaAaCBCbAABAcaCCAcacBabACCAAabbBAABCCAbABCcBabaCbACcbCbCBAABbcbcbCaBCCaAbcACCbBCbBCACCACCBcbbACAAABAabccCBABACCAcaBBABbBBcCAccAcaAcaaCBbCbbcBBAaacBaCbbCcBacaabBBCCBbBAcBCAcaaCCCbAcCCBAACAccAcaCBbaBbaBBCbaAcCacccccaAAacbaBccCBaAcCbaABaaccbaccCaBcBbbacACaACACCaacCBcaCAAaAaACAABAbaABCccAccCCacaacbbbACAaaaCcBCCcAbaBaAcccBccaCbBaCbAaBCcBAACbaCCBCaBaAAbcAccCBcBCaacaACcAAacAbaaBabbABbCCAacaaabAcBCBcBAcAacCacabaBBbbbaCbaaaBbCbAbBCCAbbCcCcbCbBbBAcBCbACCAAbBAcAcCCcaBaBcAacCabcBbaCcACccaACACbbccAAcbcbaaAaaacACccCbaCcCBbabbbbbaBCBBBcaCbBbaCAbBabBcAacaBbAcbAABabbBCAAAaacBACBbBAcAbAAbacacaBCaccbACaCBcbAacCCCcAAcbBabCAbaBBbCAABbbbAcbcCACcaaAbcAAAcacAbaCAAaaBbAbcaBCCcBCCaBBaBBcCaABABACCabACBbaCBbCcbbCaAcBabAaCbbBCAAAaaccbaaBaccbcaaBcaBbbABcaAAaBcBCcBcBbCcCCaBcBCaCAbCcCACcbBCBCaaBBABCCCAaCaCaBcBaBCBcbCCBbABacACbbBCcaAcAacCACaABBBCccbcBBBCaBAAabcccABCacCcbbAbabCAABBACacbbcAcbBBBCAABAabcABBaaBBAccBaBaAAAcbCBcBBbBCaCAcAaBaAaBCaaAcbBCcaabBAcCBBAAbbcaaCbAacACAcbACBbaBcCCCaCBAacbAcAbAabaCbcBbCacbBabbAcACccCBCBBCCBBAAcCaCcCcabcAabCacAaBcbbbcCBbbCbaBcCAAacAbbcCccbCBacBACcBBabcCaBCaCbbCbAcABAbAAAcacbaaaAbacacCbbccbcCCbcAbAaaBbcaAcbACAAcBaacBBcCCbABabbAbBBCBBcCaBaBbCcCAaBbabCcBbbaBAcbcaBcCbBCaBABacAaCBABBbcaBbacAbBcCccBaBcaaabAABBcbBaABaBBaaABcbccABCbBABBabACCbbCcbBAACCCbaBBBCBcBcCCAACcACAaAbbAaBbbbbaCcaCAbCcAbBCBbBCCACCAAABacCbAbaaAbCcBcCcaAAAbBbCcaBAacacBcACcCccCbBbaCACCbCCaaCbABbAAacbbCCBaCCcABabCbbBBacAcAABcaaACCBBAAAAaBaBcbbACBCaaAabcBABBbBCbCCCBacBBaccbbBABbabAAbABBCcbcAaBcACbAcCcACAaacCcCbACaBcBCCCBccBbBcCcCBCccaBCbBCbaBAaccCCAaCbbbBCaBBbAaCBaBaBABAacbbACbBBCAcaACBCCabBaAacAaABbBcCbBaCCbbcaCcCBCBcBabBBAAAbbCcAbBBBcABBBBBaABaCbbcbcBcBccbCaCABaBabaCaBAcCcBbcCacbabaBAcabBAccBcBCBCcCAbcaBaAcBCbBcACACcBCAccBCccCbcbbCBbbAcbCABaCbbbcaabbBAACACCaACAbAaBCBaBBacaAAcBbACaCAbbCCcaABbbABbaAaccBCcabaBcBBCaaBCbCcABAcaaaCabCbAbcaccCcBcbbcAacccAabAAaBAAcbACcBcacaACabbaBABBcBacBabcBbcbcBbaacCcbcCAcBacccaBAAcBBAaccbcCbbaCAaBBACbbcAabbbBccaCcABaBCcAaBbCBCCccaaCcbbcAAacAcbCABacBbBbaCcBcABcaAAbAbBcCaCAaABCCABCBaCaBcCbCacAaCBABabbbBABCbcbCAaCaBabCCabcaBCcbcCaAcAaaCbCaBaABbcAACBbCAcCacCbABBaCcAabbcBaBcaccCBCAACCCCcBabBaacbbbcbAbacBbCAbcaBaBbBbBaCccAcCCcABabbCAACbacAbccAAbaCAcBbBAbbcbBaCcaabAaabbABabaccbAabbCaAbBaBaaAbBBBAacAaCcAAAbAbaCCcBCCCBAcABBcACbACABCbBBaccAbcbcCbaABAAbAAaCcBBCcbbaABbBBCbaacaAabaCcaCBCcbCCACAbCBbaabbaacabAbacBcAacaCBbcaaAAaBaBcBCaAcABbABbcCaaaBBaabAbbcACbcacBBaACcbACCBABBbAbccbcbBBcCCBCbAaCcbbcaCAAcBBcACCCbbBaAaAABbbABBBbBbABbccABAbaaACbbBacBCCbCaaAAaABbbBaaAccACCAbACbccbcAccCaBbbaccCbBbBBcAaCAcbcbcAAbaBBcBacbbbABaBbaAaCCACaCCBBABaAacCbAacBAbCBCabAaCBAbaBCababBbBBABcABaBbccACaabbcAaBbacaACCCCCAACBBbBAACAabbAAcACbcCCAcCaCAaaBBBaCBaCCacccBaCBBcabBAacacBABbbcaBCcAccCabbabBcBabAbcAcAcbbabBCcbcccCAbbBCACBbcacCbBbBcAcBaCcacbcbBBCCAacbBcCcBABabBCcACcaACcacAabaCbAcCBccBAAAaaAbcbBAbCBCABacbacBAAbCAACbaBCABcbCBCbccBbAbBbcBBabbCACcCAbAbCcCCBbCCBCcaaACbBaAAABBBabBcAAcBCBAAABbBcACcBAbbcAABcAbCCaAcaBbBAbcBAAbcbBbBCCbACcbaBBBCBCAAAACccAbBaBAcbaBBabBaaBCCcAcBBCAcAaCccaBAcaBaCBbbBaCCAcbaCcaaBAAbaAbCcAcCcabCbBCbBaAcabBbABcAACAAaBBccabAacAcCBBbbBAbbcABaAaBcACBBBAACcCCCaacBccccBacBaccaabCBcAcCcBBbBabcBCBBaaBCBCbCbAaABAbcbAAcCabcAbbaBcCAcCBCccCAbbcBCcabaAbBacABCaaaccbabcabAacBAbAACbCCbaccccBABAcAaaABcCbbBCbaaCbCACcaabCabBAccaAaAAccBaCcACBCACACBbccbCAAbABbBbAccbBbcacaccCcCaAacAbBbBCbAcabaaBCCccbcAbAcAABaaBbbBACBBbaabbBaacbbacBcbccBCbcbcaBacAaaAcACccabbAcCBbCacCBCaCbcBCBBBCAAacAAABBbcCaCacCBCbCBAcbBCBCAaBcAbCCCaBbaABBBcbBBCabcaaaABaCabbcAaCBcBcBBAaccACbACBCbABccABaBBbaCAbCaAabBaCaccABcaCcaACbcAabcBcaCBcAABBbbaCcaCBCbABcbaaCbaCcCccBCaCcabBaBbaAAcccABbbcbCAABACBABaACACabbbbABCBAaacBaaccccbCaCBbAACCCCabaCcCaABababBcabaBCbaBAACbBAcabABcbbACAcbbcCbaaBBBAcAcbaBcAaaaCCaCcBCAAbBcCAcAccCcbAaBCbAcccBabAbCcaaCaccbbAaaBBAaAaAcbCABAbAbaCacBBcCBcaCbcCbcCCBcbaaACABABaCBaCBaACBaACACACAaaBabBcBBBBacABaCcBCaCaAaABCBBACBCaABaCBaCbcBCabcCBbcbBCCaBcbAaBBAbBaAAbBCCAcbCbAAAAaBBCAAAcAcbCcBAbCccaABAbcCBBCBbcCaCaBbBcCCbcAbcBCbCCcAcBCBCCCcACBcBbAaBbBCBaCbCBcBcbAabcBCBBcaaABcCcccAaCbbAcACAbCCCaaacABAaBCbBBacAbcabcABbcBaAcCBbCCBcCbACBbCbabcABBaacbBBbbAaaacbbcBaCbcaaAAaBBbacaACcAAcccCCcccAcaBaaBCAcCBbbcccaACcAbacABacAACbAcbBcAAbBAaCAaAaBcacACABbAacACaCabcbbCBAcCACAbaAACAbCABACAbCAaabcBaCCAcaBCbBAacAbBACcabBbCcbbbCBcBAaCCCBCBAccCcabAABbacbacaAcCbCCBCCaAABAcbBCaBCacAcbbCcAcCAAabABBCAAacBBaacBcBACCbCABCCaCbbcbbcCcCABbBaAAABCAAbBbAbabCCcccbbCCAAbcBcBaaaAaccaBbBAABcaCAAACaccCaBBaAACbAccCbBcBBCBbACbaccCAbbaAcbCCCccCcaAacAcaCbACbAcaaABaBabccccBcacBCACcCaAbCaBcAaccaBBbbCBCBbcACAcCBbaACbAaaaabcbacCbCBcaacCBbaCBCAaAbbcBACCABcACcacCAbBaCbaacBAABcbCAbacAcacCCbBCCCbcBaCccCaAaAcBBabCcaBBCbCBACAaCAbbacbcbaBaaCabBbBcaabacAabCbcCCacCACCACCaABCBcAaCAcBBBcAaBaAabAAaBaCacBCCaAABAcBBABBCCaAbbcbbAbCaaabBACAbcbBBbcAccCACBBCcCBCbAAaBbcAABABbbBCbcBaBBbCcCaCBAcbCBACbccaACAaccBbABaCabABBBcabBcabBabbCbbCCaBAbaAccCabCaBbBBbccaBaBBCBCbacAccbAccaAAcbaCbAbBcbbbAACCaCBCbbAcbbcCaBacBbaCbbCbaaabAAACCccAcBBbcBBBBBaCcabBAbAAcbcCCcCbcbaCbBbaCaCbCbACbbBaBcbcBAaaBBacbbBAbbcCCaaaCBbAaaCcbBCcbCAbBAAabaaAaBccCcCBACAcbcAAaaABABbCbACbbACCcAaaCccBbBbAbBCccabcaBCbcABbbCcAbAcaCbBACABBABCBCacbaaCbBcBcaAccBAAacCcbaaaACABBBBbACbaAabacbbbBBabccCAaCcBBbCAcBaBCbCAacCcCcaABcAbAcaCAcABaABcBcBBaaAacBaBCBCaBaaaCaBcCcccccBacaAABBcAABBccCbCcBBaAabbbbaBCbcaCBBCAbbbaCBbaCaCCaaBaBbbbbBabccaBCAbCCBABcbbBCCAcaACCaAaAabABABacCAbAaAcAaCCCCaaCaACBCCaBBbCABCCCAAaCABAbCaCacaAcBcaABBaBBbCbAabbCCcbCbbcAaBcACabBAbbCCcaBbacaaccacaCcCAaAabbAAcBAaAcABcCCABABBBcAcabcBABBCbCbABBCBACacBBBBbAcCcCbCABcBCBAaACabaAcCcbAbbBABBbCcbACAbAbbCabBCbCabCcaBAcaAabbBcabCBacABCbBaCbAacCCAAbcBabACCbAcbcbBBBCBCaccCbacabACcaABBAaABCBCABabCbCabbAAcaAcaCaAabbacaAcAcbaAAcBABbBBBBAABcABcbabBbCBabbbCAabCaBACccBBBcBABccbaAabbBCbCCABCAacbCBAACcaACAbaBbcAABbCcBCaCcaAACAAACCAAaCAacBabBbaACabCAaBCAcAaBBBaBAcbCCBbBAbAaAabaBcaCcaaCAacCacCcBAaBBCcbBBCcaACABBBCaBaBAcaCaaBcBAaAbbAbccCAcACBCbCBbBaccbbaACcbCcbbBcCCCBacaCaCaaBCCabBBBBbAcccacbCBaCaBCcaCAbBBBBCbabcAcbcccBAaAAaBccbBcCBcCbBccBAcacCBabAABbcBaBcbCbBcAccAaACBCCBCAaAbABAABccbABabcAaCaCaAbbBbbCaBCbCACCCaCaBcaaaBBcBbbCBACbaCaBaABcbcbAbAbcbBCCAbCABaACABcaaaBAbBacAaAacBbaBBBBAbaBACCBABCCaBCcBCBabBaBCBCBBcbcBAbbbbBAAbaCCCBaAaaAaaBBABbbccacACAABbcaCabACacaaABcAbBACbabaCBcCCabacAAACABAAbccbBccAccCBaAcaCCAaccbcbBaaBba";
+    printf("Sample 1a : %d\n", getNoviceMentorPairs(sample1,0,0)); 
+    printf("Sample 1b : %d\n", getNoviceMentorPairs(sample2,1,'A')); 
+    printf("Puzzle 1  : %d\n", getNoviceMentorPairs(puzzle1,1,'A')); 
+    printf("Sample 2  : %d\n", getNoviceMentorPairs(sample2,0,0));
+    printf("Puzzle 2  : %d\n", getNoviceMentorPairs(puzzle2,0,0));
+    printf("Sample 3  : %d\n", getNoviceMentorPairs2(sample3,1,10));
+    printf("Puzzle 3  : %d\n", getNoviceMentorPairs2(puzzle3,1000,1000));
+    return 0;
+}
