@@ -9,8 +9,6 @@
 #include <vector>
 #include <algorithm>
 
-
-
 Dataset getNewDataset(const string& filename) {
     Dataset newDataset = Dataset();
     ifstream file(filename);

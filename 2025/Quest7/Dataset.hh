@@ -45,7 +45,6 @@ public:
         words = move(result);
     }
 
-
     void addRule(const string& input) {
         Rules rule(input);
         rules.push_back(rule);
@@ -76,7 +75,6 @@ public:
             removeExtensions(this->names);
         }
     }
-
 
 private: 
 
@@ -166,4 +164,3 @@ public:
 };
 
 #endif
-    
