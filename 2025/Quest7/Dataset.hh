@@ -77,7 +77,6 @@ public:
     }
 
 private: 
-
     int countAllCombinations(char thisLetter, int depth, int displayName, string name) {
         if (displayName) cout << name << endl;
         if (depth >= 11) {
@@ -93,7 +92,6 @@ private:
         }
         return (depth < 7 ) ? num : num + 1;
     }
-
     int twoLettersSatisfiesTheRules(char letter1, char letter2) {
         for (Rules rule : rules) {
             if (rule.getLetter() == letter1) {
@@ -126,7 +124,6 @@ public:
         }
         return num;
     }    
-
     string checkNames(int partNumber) {
         int part2Answer = 0;
         int nameNumberCounter = 0;
@@ -162,5 +159,4 @@ public:
         return "No valid names found.";
     }
 };
-
 #endif
