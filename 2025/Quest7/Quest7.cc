@@ -6,28 +6,31 @@
 #include <fstream>
 #include <string>
 #include "Dataset.hh"
+#include <vector>
+#include <algorithm>
 
 
-Dataset getNewDataset(const std::string& filename) {
+
+Dataset getNewDataset(const string& filename) {
     Dataset newDataset = Dataset();
-    std::ifstream file(filename);
+    ifstream file(filename);
 
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file: " << filename << "\n";
+        cerr << "Error: Could not open file: " << filename << "\n";
         return newDataset;
     }
 
-    std::string line;
-    while (std::getline(file, line)) {
-        if (line.find('>') != std::string::npos) {
+    string line;
+    while (getline(file, line)) {
+        if (line.find('>') != string::npos) {
             newDataset.addRule(line);
-        } else if (line.find(',') != std::string::npos) {
+        } else if (line.find(',') != string::npos) {
             newDataset.addNames(line);
         }   
     }
 
     file.close();
-        return newDataset;
+    return newDataset;
 }
 
 int main() {
@@ -36,7 +39,7 @@ int main() {
     cout << "Example 1: " << test.checkNames(1);
     Dataset puzzle = getNewDataset("puzzle1.txt");
     //puzzle1.printDataset();
-    cout << "\nPuzzle 1: " << puzzle.checkNames(1) << "\n";
+    cout << "\nPuzzle 1: " << puzzle.checkNames(1);
     test.clearAll();
     test = getNewDataset("sample2.txt");
     //sample2.printDataset();
@@ -48,7 +51,14 @@ int main() {
     test.clearAll();
     test = getNewDataset("sample3a.txt");
     //test.printDataset();
-    cout << "Sample 3a combinations: " << test.findAllPossibleNames() << "\n";
+    cout << "Sample 3a combinations: " << test.findAllPossibleNames(0) << "\n";
+    test.clearAll();
+    test = getNewDataset("sample3b.txt");
+    //test.printDataset();
+    cout << "Sample 3b combinations: " << test.findAllPossibleNames(0) << "\n";
+    puzzle.clearAll();
+    puzzle = getNewDataset("puzzle3.txt");
+    cout << "Puzzle 3 combinations: " << puzzle.findAllPossibleNames(0) << "\n";
 
     return 0;
 }

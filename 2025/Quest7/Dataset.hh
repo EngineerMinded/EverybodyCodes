@@ -22,21 +22,31 @@ public:
         rules.clear();
     }
 
-    void addNames(const std::string& input) {
-        std::vector<std::string> names;
-        std::stringstream ss(input);
-        std::string name;
+    void removeExtensions(vector<string>& words) {
+        vector<string> result;
 
-        while (std::getline(ss, name, ',')) {
-            // Optional: trim whitespace
-            if (!name.empty() && name.front() == ' ')
-                name.erase(0, 1);
+        for (size_t i = 0; i < words.size(); ++i) {
+            bool isExtension = false;
 
-            this->names.push_back(name);
+            for (size_t j = 0; j < words.size(); ++j) {
+                if (i != j &&
+                    words[i].size() > words[j].size() &&
+                    words[i].substr(0, words[j].size()) == words[j]) {
+                    isExtension = true;
+                    break;
+                }
+            }
+
+            if (!isExtension) {
+                result.push_back(words[i]);
+            }
         }
+
+        words = move(result);
     }
 
-    void addRule(const std::string& input) {
+
+    void addRule(const string& input) {
         Rules rule(input);
         rules.push_back(rule);
     }
@@ -51,33 +61,70 @@ public:
             rule.printRule();
         }
     }
-private:
-/**********************************************************
- * WHY DON'T THIS WORK?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?   *
- **********************************************************/
- 
-    long long countAllCombinations(char thisLetter) {
-        
-        long long num = 1;
+
+    void addNames(const string& input) {
+        vector<string> names;
+        stringstream ss(input);
+        string name;
+
+        while (getline(ss, name, ',')) {
+            // Optional: trim whitespace
+            if (!name.empty() && name.front() == ' ')
+                name.erase(0, 1);
+
+            this->names.push_back(name);
+            removeExtensions(this->names);
+        }
+    }
+
+
+private: 
+
+    int countAllCombinations(char thisLetter, int depth, int displayName, string name) {
+        if (displayName) cout << name << endl;
+        if (depth >= 11) {
+            return 1;
+        }
+        int num = 0;
         for (Rules rule : rules) {
            if (rule.getLetter() == thisLetter) {
-            cout << "Expanding letter: " << thisLetter << "\n";
-            num = num + 1;
                 for (char l : rule.getSubLetters()) {
-                    num = num + countAllCombinations(l);
-                } 
+                    num +=countAllCombinations(l , depth + 1,displayName, name + l);
+                }
            }
         }
-        cout << num << endl;
-        return num;
+        return (depth < 7 ) ? num : num + 1;
+    }
+
+    int twoLettersSatisfiesTheRules(char letter1, char letter2) {
+        for (Rules rule : rules) {
+            if (rule.getLetter() == letter1) {
+                for(char c : rule.getSubLetters()) {
+                    if (c == letter2) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
     }
 public:
-    long long findAllPossibleNames() {
-        long long num = 0;
+    int findAllPossibleNames(int displayName) {
+        int num = 0;
         for (string name : names) {
-            char lastLetter = name[name.size() -1];
-            num = num + 1; //count the name itself
-            num= num + countAllCombinations(lastLetter);
+            int wordIsSatisfied = 1;
+            for (int k = 1; k < name.size() ; k++) {
+                char letter1 = name[k - 1], letter2 = name[k];
+                if (twoLettersSatisfiesTheRules(letter1,letter2) == 0) { 
+                    //cout << name << " " << letter1 << " " << letter2 << endl;
+                    wordIsSatisfied = 0;
+                    break;
+                }
+            }
+            if (wordIsSatisfied && name.size() <= 10) {
+                char lastLetter = name[name.size() - 1];
+                num += countAllCombinations(lastLetter,name.size(),displayName,name);
+            }
         }
         return num;
     }    
