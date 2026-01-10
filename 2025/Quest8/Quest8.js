@@ -67,9 +67,8 @@ class Quest8 {
     }
     
     partTwoCount() {
-        let highestCount = this.medianValue * 2;
         let count = 0;
-        for (let i = 0; i < highestCount; i++) {
+        for (let i = 0; i < this.lineList.length; i++) {
             for (let j = 0 ; j < i; j++) {
                 if (this.lineFormsKnot(this.lineList[i], this.lineList[j])) {
                     count++;
@@ -78,9 +77,9 @@ class Quest8 {
         }
         return count;
     }
-/******************************************************
- * THIS COULD BE OPTIMIZED BETTER BUT, IT DID THE JOB *
- ******************************************************/
+/*********************************************************
+ * NOT THE MOST EFFICIENT WAY TO DO THIS, BUT IT WORKS!  *
+ *********************************************************/
     partThreeCount() {
         let highestCount = this.medianValue * 2;
         let maxCount = 0;
