@@ -31,7 +31,6 @@ public:
     vector<char> getSubLetters() const {
         return leadingLetters;
     }
-    
 };
 
 #endif
