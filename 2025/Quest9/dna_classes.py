@@ -28,4 +28,8 @@ class DNAGROUP:
         return total
     
     def getSizeOfGroup(self):
-        return len(self.dnaGroup)   
+        return len(self.dnaGroup)
+
+    def printAll(self):
+        for d in self.dnaGroup:
+            print(f"Strand: {d.strand}, Number: {d.number}")   

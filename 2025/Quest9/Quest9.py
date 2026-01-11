@@ -86,12 +86,18 @@ def findLargestFamilyGroup(strands):
                                 dnaGROUP.append(newGroup)
     dnaGROUP = mergeDNAGroupswithCommonDNA(dnaGROUP)
     largestGroupSize = 0
+    totalNumbertoreturn = 0
     for g in dnaGROUP:
         if g.getSizeOfGroup() > largestGroupSize:
-            largestGroupSize = g.getTotalNumber()
-            #print(str(g.getSizeOfGroup()) +  " " + str(largestGroupSize))
+            largestGroupSize = g.getSizeOfGroup()
+            totalNumbertoreturn = g.getTotalNumber()
+    # Debug MOde
+    for g in dnaGROUP:
+        #g.printAll()
+        print("Total Number in Group:", g.getTotalNumber())
+        print("Size of Group:", g.getSizeOfGroup())
 
-    return largestGroupSize
+    return totalNumbertoreturn
     
 # PART ONE
 Example1a = "CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG"
@@ -115,5 +121,5 @@ strands = read_lines("example2.txt")
 print(findLargestFamilyGroup(strands))
 strands = read_lines("example3.txt")
 print(findLargestFamilyGroup(strands))
-strands = read_lines("puzzle3.1.txt")
+strands = read_lines("puzzle3.txt")
 print(findLargestFamilyGroup(strands))
