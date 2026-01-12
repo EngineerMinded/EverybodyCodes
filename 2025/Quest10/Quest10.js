@@ -13,10 +13,13 @@ function readFileTo2DCharArray(filename) {
 }
 
 class Grid {
-    constructor(filename) {
+    constructor() {
+        this.grid = [];
+    }
+    readFromFile(filename) {
         this.grid = readFileTo2DCharArray(filename);
     }
-    constructor(lengthX,LengthY,starX,starY) {
+    createBlank(lengthX,LengthY,starX,starY) {
         for (let i = 0; i < lengthX; i++) {
             let newline = [];   
             for (let j = 0; j < LengthY; j++) {
@@ -99,6 +102,7 @@ class Grid {
     }
    // FINISH UP ON PART 2 SEQUENCE
     part2Sequence(numberOfPhases) {
+        let sheepThatWereEaten = 0;
         function moveSheep() {
             for (let i = 1; i < this.grid.length; i++) {
                 for (let j = 0; j < this.grid[i].length; j++) {
@@ -107,19 +111,24 @@ class Grid {
                             if (this.grid[i][j] == '#') {
                                 this.grid[i][j] = 's';
                             }
-                            else if (this.grid[i -1][j] = '.')
-                                this.grid[i -1][j] = 'S';
+                            else if (this.grid[i][j] = '.') {
+                                this.grid[i][j] = 'S';
+                            }
+                            this.grid[i - 1][j] = '.';
                         }
-                        if (this.grid[i - 1][j] == 's') {
+                        else if (this.grid[i - 1][j] == 's') {
                             if (this.grid[i][j] == '#') {
                                 this.grid[i][j] = 's';
                             }
+                            else if (this.grid[i][j] = '.') {
+                                this.grid[i][j] = 'S';
+                            }
+                            this.grid[i - 1][j] = '#'
                         }
                     }
                 }
             }
         }
-
         let dX = 0; let dY = 0;
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[i].length; j++) {
@@ -128,25 +137,41 @@ class Grid {
                 }
             }
         }
-        let dragonGrid = new Grid(this.grid.length, this.grid[0].length,dX,dY); 
+        let dragonGrid = new Grid();
+        dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
         for (let phase = 0; phase < numberOfPhases; phase++) {
             dragonGrid.startPlotting(1,2);
-
+            moveSheep();
+            for (let i = 0; i < this.grid.length; i++) {
+                for (let j = 0; j < this.grid[i].length; j++) {
+                    if (dragonGrid.grid[i][j] == 'X') {
+                        if (this.grid[i][j] == 'S') {
+                            this.grid[i][j] = '.';
+                            sheepThatWereEaten++;
+                        }
+                    }
+                }
+            }
         }
+        return sheepThatWereEaten;
     }
 }
 
-let example1 = new Grid("example1.txt")
+let example1 = new Grid();
+example1.readFromFile("example1.txt")
 example1.startPlotting(3,1);
 console.log(`Sheep reached in example1: ${example1.countAllSheep()}`);
 
-let puzzle1 = new Grid("puzzle1.txt")
+let puzzle1 = new Grid();
+puzzle1.readFromFile("puzzle1.txt")
 puzzle1.startPlotting(4,1);
 console.log(`Sheep reached in puzzle1: ${puzzle1.countAllSheep()}`);
 
-let example0 = new Grid("example0.txt");
+let example0 = new Grid();
+example0.readFromFile("example0.txt");
 example0.startPlotting(3,2);
 example0.printGrid();
 
-let example2 = new Grid("example1.txt");
+let example2 = new Grid("example2.txt");
 example2.startPlotting(3,2);
+example2.part2Sequence(3);
