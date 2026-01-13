@@ -100,35 +100,39 @@ class Grid {
             console.log(this.grid[i].join(''));
         }       
     }
+    moveSheep() {
+        for (let i = this.grid.length - 1; i > 0; i--) {
+            for (let j = this.grid.length - 1; j > 0; j--) {
+                    if (this.grid[i -1][j] == 'S') {
+                        if (this.grid[i][j] == '#') {
+                            this.grid[i][j] = 's';
+                        }
+                        else if (this.grid[i][j] = '.') {
+                            this.grid[i][j] = 'S';
+                        }
+                        this.grid[i - 1][j] = '.';
+                    }
+                    else if (this.grid[i - 1][j] == 's') {
+                        if (this.grid[i][j] == '#') {
+                            this.grid[i][j] = 's';
+                        }
+                        else if (this.grid[i][j] = '.') {
+                            this.grid[i][j] = 'S';
+                        }
+                        this.grid[i - 1][j] = '#'
+                    }
+                    else if (this.grid[i - 1][j] == '.') {
+                        if (this.grid[i][j] != '#') {
+                            this.grid[i][j] = '.';
+                        }
+                    }
+
+            }
+        }
+    }
    // FINISH UP ON PART 2 SEQUENCE
     part2Sequence(numberOfPhases) {
         let sheepThatWereEaten = 0;
-        function moveSheep() {
-            for (let i = 1; i < this.grid.length; i++) {
-                for (let j = 0; j < this.grid[i].length; j++) {
-                    if (i < this,grid.length - 1) {
-                        if (this.grid[i -1][j] == 'S') {
-                            if (this.grid[i][j] == '#') {
-                                this.grid[i][j] = 's';
-                            }
-                            else if (this.grid[i][j] = '.') {
-                                this.grid[i][j] = 'S';
-                            }
-                            this.grid[i - 1][j] = '.';
-                        }
-                        else if (this.grid[i - 1][j] == 's') {
-                            if (this.grid[i][j] == '#') {
-                                this.grid[i][j] = 's';
-                            }
-                            else if (this.grid[i][j] = '.') {
-                                this.grid[i][j] = 'S';
-                            }
-                            this.grid[i - 1][j] = '#'
-                        }
-                    }
-                }
-            }
-        }
         let dX = 0; let dY = 0;
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[i].length; j++) {
@@ -138,10 +142,13 @@ class Grid {
             }
         }
         let dragonGrid = new Grid();
-        dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
         for (let phase = 0; phase < numberOfPhases; phase++) {
-            dragonGrid.startPlotting(1,2);
-            moveSheep();
+            console.log(`--- Phase ${phase + 1} ---`);
+            dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
+            dragonGrid.startPlotting(phase + 1,2);
+            this.moveSheep();
+            //dragonGrid.printGrid();
+            this.printGrid();
             for (let i = 0; i < this.grid.length; i++) {
                 for (let j = 0; j < this.grid[i].length; j++) {
                     if (dragonGrid.grid[i][j] == 'X') {
@@ -172,6 +179,7 @@ example0.readFromFile("example0.txt");
 example0.startPlotting(3,2);
 example0.printGrid();
 
-let example2 = new Grid("example2.txt");
-example2.startPlotting(3,2);
-example2.part2Sequence(3);
+let example2 = new Grid();
+example2.readFromFile("example2.txt");
+example2.printGrid
+console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
