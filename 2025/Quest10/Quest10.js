@@ -15,6 +15,8 @@ function readFileTo2DCharArray(filename) {
 class Grid {
     constructor() {
         this.grid = [];
+        this.dx = 0;
+        this.dy = 0;
     }
     readFromFile(filename) {
         this.grid = readFileTo2DCharArray(filename);
@@ -102,7 +104,7 @@ class Grid {
     }
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
-            for (let j = this.grid.length - 1; j > 0; j--) {
+            for (let j = 0; j < this.grid[i].length; j++) {
                     if (this.grid[i -1][j] == 'S') {
                         if (this.grid[i][j] == '#') {
                             this.grid[i][j] = 's';
@@ -130,7 +132,7 @@ class Grid {
             }
         }
     }
-   // FINISH UP ON PART 2 SEQUENCE
+   // This way is not efficent and it may because of the plotpoint for large data. make it more efficent
     part2Sequence(numberOfPhases) {
         let sheepThatWereEaten = 0;
         let dX = 0; let dY = 0;
@@ -144,21 +146,28 @@ class Grid {
         let dragonGrid = new Grid();
         for (let phase = 0; phase < numberOfPhases; phase++) {
             console.log(`--- Phase ${phase + 1} ---`);
+            dragonGrid = new Grid();
             dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
             dragonGrid.startPlotting(phase + 1,2);
-            this.moveSheep();
-            //dragonGrid.printGrid();
-            this.printGrid();
-            for (let i = 0; i < this.grid.length; i++) {
-                for (let j = 0; j < this.grid[i].length; j++) {
-                    if (dragonGrid.grid[i][j] == 'X') {
-                        if (this.grid[i][j] == 'S') {
-                            this.grid[i][j] = '.';
-                            sheepThatWereEaten++;
+            
+            dragonGrid.printGrid();
+            //this.printGrid();
+            for (let k = 0; k < 2; k++) {
+                for (let i = 0; i < this.grid.length; i++) {
+                    for (let j = 0; j < this.grid[i].length; j++) {
+                        if (dragonGrid.grid[i][j] == 'X') {
+                            //console.log(`Dragon can reach (${i}, ${j})`);
+                            if (this.grid[i][j] == 'S') {
+                                //console.log(`Sheep at (${i}, ${j}) was eaten by the dragon.`);
+                                this.grid[i][j] = '.';
+                                sheepThatWereEaten++;
+                            }
                         }
                     }
                 }
+                if (k == 0) {this.moveSheep();}
             }
+            console.log(`After phase ${phase + 1}, sheep eaten so far: ${sheepThatWereEaten}`);
         }
         return sheepThatWereEaten;
     }
@@ -183,3 +192,7 @@ let example2 = new Grid();
 example2.readFromFile("example2.txt");
 example2.printGrid
 console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
+
+let puzzle2 = new Grid();
+puzzle2.readFromFile("puzzle2.txt");
+console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
