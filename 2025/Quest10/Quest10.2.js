@@ -17,11 +17,14 @@ class Grid {
         this.grid = [];
         this.dx = 0;
         this.dy = 0;
+
+        this.nextPlotList = [];
     }
     readFromFile(filename) {
         this.grid = readFileTo2DCharArray(filename);
     }
     createBlank(lengthX,LengthY,starX,starY) {
+        console.log(`Creating blank grid of size ${lengthX}x${LengthY} with dragon at (${starX}, ${starY})`);
         for (let i = 0; i < lengthX; i++) {
             let newline = [];   
             for (let j = 0; j < LengthY; j++) {
@@ -35,43 +38,72 @@ class Grid {
         }
     } 
 
-    plotpoint(x,y, movesRemaining, partNumber) {
+    plotpoint(movesremaining,partNumber) {
         //console.log(`Plotting point at (${x}, ${y}) with ${movesRemaining} moves remaining.`);
-        if (this.grid[x][y] == '.' || this.grid[x][y] == 'S' || this.grid[x][y] == 'X' || this.grid[x][y] == 'Z') {
-            this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
-            if ( movesRemaining > 0 && partNumber == 2) {
-                 this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';
-            }
+        let newPlotList = [];
+        this.nextPlotList.forEach( (point) => {
+            //console.log(`Processing point (${point[0]}, ${point[1]})`);
+            let x = point[0];
+            let y = point[1];
+            //if (this.grid[x][y] == '.' || this.grid[x][y] == 'S' || this.grid[x][y] == 'X' || this.grid[x][y] == 'Z') {
+            if (movesremaining == 0 || partNumber == 2) {
+                //console.log(`Marking point (${x}, ${y}) as reachable.`);
+                this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
+                //if ( movesremaining > 0 && partNumber == 2) {
+                //    this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';
+                //}
+                //if (movesremaining == 0) {
+                //    return;
+                //}
         
-            if (movesRemaining == 0) {
-                return;
+            // check all 8 possible next moves
+                if (x >= 1 && y >= 2 ) {
+                    newPlotList.push([x - 1, y - 2]);
+                }
+                if (x >= 2 && y >= 1 ) {
+                    newPlotList.push([x - 2, y - 1]);
+                }
+                if (x < this.grid.length - 2 && y >= 1 ) {
+                    newPlotList.push([x + 2, y - 1]);
+                }
+                if (x < this.grid.length - 1 && y >= 2 ) {  
+                    newPlotList.push([x + 1, y - 2]);
+                }
+                if (x >= 1 && y < this.grid[0].length - 2 ) {
+                    newPlotList.push([x - 1, y + 2]);
+                }   
+                if (x >= 2 && y <= this.grid[0].length -1) {
+                    newPlotList.push([x - 2, y + 1]);
+                }
+                if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
+                    newPlotList.push([x + 2, y + 1]);
+                }   
+                if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
+                    newPlotList.push([x + 1, y + 2]);
+                }
             }
-        // check all 8 possible next moves
-            if (x >= 1 && y >= 2 ) {
-                this.plotpoint(x - 1, y - 2, movesRemaining - 1, partNumber);
-            }
-            if (x >= 2 && y >= 1 ) {
-                this.plotpoint(x - 2, y - 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 2 && y >= 1 ) {
-                this.plotpoint(x + 2, y - 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 1 && y >= 2 ) {  
-                this.plotpoint(x + 1, y - 2, movesRemaining - 1, partNumber);
-            }
-            if (x >= 1 && y < this.grid[0].length - 2 ) {
-                this.plotpoint(x - 1, y + 2, movesRemaining - 1, partNumber);
-            }   
-            if (x >= 2 && y <= this.grid[0].length -1) {
-                this.plotpoint(x - 2, y + 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
-                this.plotpoint(x + 2, y + 1, movesRemaining - 1, partNumber);
-            }   
-            if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
-                this.plotpoint(x + 1, y + 2, movesRemaining - 1, partNumber);
-            }
+            newPlotList.push(point)
             
+        });
+        this.nextPlotList = [];
+        newPlotList.forEach( (point, index) => {
+            // remove duplicates
+            let isDuplicate = false;    
+            for (let k = 0; k < index; k++) {
+                if (point[0] == newPlotList[k][0] && point[1] == newPlotList[k][1]) {
+                    isDuplicate = true;
+                    break;
+                }   
+            }
+            if (!isDuplicate) {
+                this.nextPlotList.push(point);
+            }
+        });
+        newPlotList.forEach( (point, index) => {
+            this.nextPlotList.push(point);
+        });
+        if (movesremaining > 0) {
+            this.plotpoint(movesremaining - 1,partNumber);
         }
     }
     
@@ -80,7 +112,8 @@ class Grid {
             for (let j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] == 'D') {
                     this.grid[i][j] = ".";
-                    this.plotpoint(i, j, movesRemaining, partNumber);
+                    this.nextPlotList.push([i, j]);
+                    this.plotpoint(movesRemaining, partNumber);
                 }
             }
         }
@@ -144,13 +177,12 @@ class Grid {
             }
         }
         let dragonGrid = new Grid();
+        dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
+        dragonGrid.printGrid();
         for (let phase = 0; phase < numberOfPhases; phase++) {
             console.log(`--- Phase ${phase + 1} ---`);
-            dragonGrid = new Grid();
-            dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
-            dragonGrid.startPlotting(phase + 1,2);
-            
-            dragonGrid.printGrid();
+            dragonGrid.startPlotting(1,2);
+            //dragonGrid.printGrid();
             //this.printGrid();
             for (let k = 0; k < 2; k++) {
                 for (let i = 0; i < this.grid.length; i++) {
@@ -185,7 +217,7 @@ console.log(`Sheep reached in puzzle1: ${puzzle1.countAllSheep()}`);
 
 let example0 = new Grid();
 example0.readFromFile("example0.txt");
-example0.startPlotting(3,2);
+example0.startPlotting(1,2);
 example0.printGrid();
 /*
 let example2 = new Grid();
