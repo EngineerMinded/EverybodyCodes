@@ -39,22 +39,17 @@ class Grid {
     } 
 
     plotpoint(movesremaining,partNumber) {
-        //console.log(`Plotting point at (${x}, ${y}) with ${movesRemaining} moves remaining.`);
+        
         let newPlotList = [];
         this.nextPlotList.forEach( (point) => {
-            //console.log(`Processing point (${point[0]}, ${point[1]})`);
             let x = point[0];
             let y = point[1];
-            //if (this.grid[x][y] == '.' || this.grid[x][y] == 'S' || this.grid[x][y] == 'X' || this.grid[x][y] == 'Z') {
-            if (movesremaining == 0 || partNumber == 2) {
-                //console.log(`Marking point (${x}, ${y}) as reachable.`);
-                this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
-                //if ( movesremaining > 0 && partNumber == 2) {
-                //    this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';
-                //}
-                //if (movesremaining == 0) {
-                //    return;
-                //}
+            //console.log(`Processing point (${x}, ${y}) with ${movesremaining} moves remaining.`);
+            
+            if (partNumber == 1 || (partNumber == 2 )) {
+                if (partNumber == 1 || (partNumber == 2 && movesremaining == 0)) {
+                    this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
+                }
         
             // check all 8 possible next moves
                 if (x >= 1 && y >= 2 ) {
@@ -82,10 +77,9 @@ class Grid {
                     newPlotList.push([x + 1, y + 2]);
                 }
             }
-            newPlotList.push(point)
             
         });
-        this.nextPlotList = [];
+        this.nextPlotList.length = 0; // clear the list
         newPlotList.forEach( (point, index) => {
             // remove duplicates
             let isDuplicate = false;    
@@ -99,7 +93,7 @@ class Grid {
                 this.nextPlotList.push(point);
             }
         });
-        newPlotList.forEach( (point, index) => {
+        newPlotList.forEach( (point) => {
             this.nextPlotList.push(point);
         });
         if (movesremaining > 0) {
@@ -113,6 +107,9 @@ class Grid {
                 if (this.grid[i][j] == 'D') {
                     this.grid[i][j] = ".";
                     this.nextPlotList.push([i, j]);
+                    if (movesRemaining == 0 )  {
+                        return ;
+                    }
                     this.plotpoint(movesRemaining, partNumber);
                 }
             }
@@ -179,11 +176,10 @@ class Grid {
         let dragonGrid = new Grid();
         dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
         dragonGrid.printGrid();
+        dragonGrid.startPlotting(0,2);
         for (let phase = 0; phase < numberOfPhases; phase++) {
             console.log(`--- Phase ${phase + 1} ---`);
-            dragonGrid.startPlotting(1,2);
-            //dragonGrid.printGrid();
-            //this.printGrid();
+            dragonGrid.plotpoint(1,2);
             for (let k = 0; k < 2; k++) {
                 for (let i = 0; i < this.grid.length; i++) {
                     for (let j = 0; j < this.grid[i].length; j++) {
@@ -217,15 +213,14 @@ console.log(`Sheep reached in puzzle1: ${puzzle1.countAllSheep()}`);
 
 let example0 = new Grid();
 example0.readFromFile("example0.txt");
-example0.startPlotting(1,2);
+example0.startPlotting(3,2);
 example0.printGrid();
-/*
+
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
-example2.printGrid
+example2.printGrid();
 console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
 
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
 console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
-*/
