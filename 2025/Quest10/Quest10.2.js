@@ -42,6 +42,7 @@ class Grid {
         
         let newPlotList = [];
         this.nextPlotList.forEach( (point) => {
+            console.log(`Current point to process: (${point[0]}, ${point[1]})`);
             let x = point[0];
             let y = point[1];
             //console.log(`Processing point (${x}, ${y}) with ${movesremaining} moves remaining.`);
