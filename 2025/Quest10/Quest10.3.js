@@ -83,19 +83,19 @@ class Grid {
             if (x >= 2 && y >= 1 ) {
                 this.plotpoint(x - 2, y - 1, movesRemaining - 1, partNumber);
             }
-            if (x < this.grid.length - 2 && y >= 1 ) {
+            if (x < this.dx - 2 && y >= 1 ) {
                 this.plotpoint(x + 2, y - 1, movesRemaining - 1, partNumber);
             }
-            if (x < this.grid.length - 1 && y >= 2 ) {  
+            if (x < this.dx - 1 && y >= 2 ) {  
                 this.plotpoint(x + 1, y - 2, movesRemaining - 1, partNumber);
             }
-            if (x >= 1 && y < this.grid[0].length - 2 ) {
+            if (x >= 1 && y < this.dy - 2 ) {
                 this.plotpoint(x - 1, y + 2, movesRemaining - 1, partNumber);
             }   
-            if (x >= 2 && y <= this.grid[0].length -1) {
+            if (x >= 2 && y <= dy -1) {
                 this.plotpoint(x - 2, y + 1, movesRemaining - 1, partNumber);
             }
-            if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
+            if (x < this.dx - 2 && y < this.grid[0].length - 1 ) {
                 this.plotpoint(x + 2, y + 1, movesRemaining - 1, partNumber);
             }   
             if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
@@ -114,9 +114,21 @@ class Grid {
     }
 
     printGrid() {
-        for (let i = 0; i < this.grid.length; i++) {
-            console.log(this.grid[i].join(''));
-        }       
+        for (let i = 0; i < dx; i++) {
+            line = "";
+            for (let j = 0; j <dy; j++) {
+                if (exists(this.dragon,i,j)) {
+                    line += 'X';
+                }
+                else if (exists(this.sheep,i,j)){
+                    line += 'S';
+                }
+                else {
+                    line += '.';
+                }
+            }
+            console.log(line);
+        }           
     }
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
