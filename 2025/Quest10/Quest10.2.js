@@ -18,7 +18,6 @@ class dragonPoints {
         this.points = [];
         this.xRange = x;
         this.yRange = y;
-        console.log(`Dragon initialized with board size ${x} x ${y}`);
     }
 
     addPoint(x, y) {
@@ -66,12 +65,14 @@ class dragonPoints {
         });
         if (deleteLastGeneration) {
             this.points = [];
-            this.points = this.points.concat(newPoints);
-        } else {
-            this.points = this.points.concat(newPoints); 
-            points = [...new Set(points)];       
+        
         }
-        console.log(`Dragon can reach ${this.points.length} unique positions.`);
+        newPoints.forEach(point => {
+            if (!this.exists(point[0], point[1])) {
+                this.points.push(point);
+            }
+        });     
+
     }
 
 }
@@ -212,7 +213,6 @@ class Grid {
         let dragonGrid = new dragonPoints(this.grid.length, this.grid[0].length);
         dragonGrid.addPoint(dX, dY);
         for (let phase = 0; phase < numberOfPhases; phase++) {
-            console.log(`--- Phase ${phase + 1} ---`);
             dragonGrid.knightMoves(true);
             
             for (let k = 0; k < 2; k++) {
@@ -226,7 +226,6 @@ class Grid {
                 });
                 if (k == 0) {this.moveSheep();} 
             }
-            console.log(`After phase ${phase + 1}, sheep eaten so far: ${sheepThatWereEaten}`);
         }
         return sheepThatWereEaten;
     }
@@ -241,11 +240,6 @@ let puzzle1 = new Grid();
 puzzle1.readFromFile("puzzle1.txt")
 puzzle1.startPlotting(4,1);
 console.log(`Sheep reached in puzzle1: ${puzzle1.countAllSheep()}`);
-
-let example0 = new Grid();
-example0.readFromFile("example0.txt");
-example0.startPlotting(3,2);
-example0.printGrid();
 
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
