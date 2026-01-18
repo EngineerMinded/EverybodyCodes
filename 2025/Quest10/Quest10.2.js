@@ -68,39 +68,17 @@ class Grid {
         //console.log(`Plotting point at (${x}, ${y}) with ${movesRemaining} moves remaining.`);
         if (this.grid[x][y] == '.' || this.grid[x][y] == 'S' || this.grid[x][y] == 'X' || this.grid[x][y] == 'Z') {
             this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
-            if ( movesRemaining > 0 && partNumber == 2) {
-                 this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';
-            }
-        
-            if (movesRemaining == 0) {
-                return;
-            }
+            if ( movesRemaining > 0 && partNumber == 2) {this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';}
+            if (movesRemaining == 0) {return;}
         // check all 8 possible next moves
-            if (x >= 1 && y >= 2 ) {
-                this.plotpoint(x - 1, y - 2, movesRemaining - 1, partNumber);
-            }
-            if (x >= 2 && y >= 1 ) {
-                this.plotpoint(x - 2, y - 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 2 && y >= 1 ) {
-                this.plotpoint(x + 2, y - 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 1 && y >= 2 ) {  
-                this.plotpoint(x + 1, y - 2, movesRemaining - 1, partNumber);
-            }
-            if (x >= 1 && y < this.grid[0].length - 2 ) {
-                this.plotpoint(x - 1, y + 2, movesRemaining - 1, partNumber);
-            }   
-            if (x >= 2 && y <= this.grid[0].length -1) {
-                this.plotpoint(x - 2, y + 1, movesRemaining - 1, partNumber);
-            }
-            if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
-                this.plotpoint(x + 2, y + 1, movesRemaining - 1, partNumber);
-            }   
-            if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
-                this.plotpoint(x + 1, y + 2, movesRemaining - 1, partNumber);
-            }
-            
+            if (x >= 1 && y >= 2 ) {this.plotpoint(x - 1, y - 2, movesRemaining - 1, partNumber);}
+            if (x >= 2 && y >= 1 ) {this.plotpoint(x - 2, y - 1, movesRemaining - 1, partNumber);}
+            if (x < this.grid.length - 2 && y >= 1 ) {this.plotpoint(x + 2, y - 1, movesRemaining - 1, partNumber);}
+            if (x < this.grid.length - 1 && y >= 2 ) {this.plotpoint(x + 1, y - 2, movesRemaining - 1, partNumber);}
+            if (x >= 1 && y < this.grid[0].length - 2 ) {this.plotpoint(x - 1, y + 2, movesRemaining - 1, partNumber);}   
+            if (x >= 2 && y <= this.grid[0].length -1) {this.plotpoint(x - 2, y + 1, movesRemaining - 1, partNumber);}
+            if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {this.plotpoint(x + 2, y + 1, movesRemaining - 1, partNumber);}   
+            if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {this.plotpoint(x + 1, y + 2, movesRemaining - 1, partNumber);}
         }
     }
     
