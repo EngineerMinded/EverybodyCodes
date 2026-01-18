@@ -132,7 +132,9 @@ class Grid {
             }
         }
     }
-   // This way is not efficent and it may because of the plotpoint for large data. make it more efficent
+   ////////////////////////////////////////////////////////////////////////////////////////////////////
+   // THIS ALGORITH WAS DEEMED INNEFFICENT AND IS NOW CONSIDERED DEPRECATED                          //
+   ////////////////////////////////////////////////////////////////////////////////////////////////////
     part2Sequence(numberOfPhases) {
         let sheepThatWereEaten = 0;
         let dX = 0; let dY = 0;

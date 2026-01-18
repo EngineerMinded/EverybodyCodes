@@ -199,7 +199,7 @@ class Grid {
             }
         }
     }
-   // This way is not efficent and it may because of the plotpoint for large data. make it more efficent
+
     part2Sequence(numberOfPhases) {
         let sheepThatWereEaten = 0;
         let dX = 0; let dY = 0;
@@ -249,4 +249,3 @@ console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
 console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
-
