@@ -187,7 +187,7 @@ let example0 = new Grid();
 example0.readFromFile("example0.txt");
 example0.startPlotting(3,2);
 example0.printGrid();
-/*
+
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
 example2.printGrid
@@ -196,4 +196,3 @@ console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
 console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
-*/

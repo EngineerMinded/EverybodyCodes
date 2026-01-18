@@ -12,19 +12,82 @@ function readFileTo2DCharArray(filename) {
     return grid;
 }
 
+class dragonPoints {
+
+    constructor(x,y) {
+        this.points = [];
+        this.xRange = x;
+        this.yRange = y;
+        console.log(`Dragon initialized with board size ${x} x ${y}`);
+    }
+
+    addPoint(x, y) {
+        this.points.push([x,y]);
+    }
+
+    exists(x,y){
+        for (let point of this.points) {
+            if (point[0] == x && point[1] == y) {
+                return true;
+            }       
+        }
+        return false;   
+    }
+
+    knightMoves(deleteLastGeneration) {
+        let newPoints = [];
+        this.points.forEach(point => {
+            let [x, y] = point;
+            // Generate all 8 possible knight moves
+            if (x >= 1 && y >= 2  && !this.exists(x - 1, y - 2)) {
+                newPoints.push([x - 1, y - 2]);
+            }
+            if (x >= 2 && y >= 1  && !this.exists(x - 2, y - 1)) {
+                newPoints.push([x - 2, y - 1]);
+            }   
+            if (x < this.xRange - 2 && y >= 1  && !this.exists(x + 2, y - 1)) {
+                newPoints.push([x + 2, y - 1]);
+            }
+            if (x < this.xRange - 1 && y >= 2 && !this.exists(x + 1, y - 2)) {
+                newPoints.push([x + 1, y - 2]);
+            }   
+            if (x >= 1 && y < this.yRange - 2 && !this.exists(x - 1, y + 2)) {
+                newPoints.push([x - 1, y + 2]);
+            }
+            if (x >= 2 && y <= this.yRange -1 && !this.exists(x - 2, y + 1)) {
+                newPoints.push([x - 2, y + 1]);
+            }
+            if (x < this.xRange - 2 && y < this.yRange - 1  && !this.exists(x + 2, y + 1)) {
+                newPoints.push([x + 2, y + 1]);
+            }   
+            if (x < this.xRange - 1 && y < this.yRange - 2 && !this.exists(x + 1, y + 2)) {
+                newPoints.push([x + 1, y + 2]);
+            }
+        });
+        if (deleteLastGeneration) {
+            this.points = [];
+            this.points = this.points.concat(newPoints);
+        } else {
+            this.points = this.points.concat(newPoints); 
+            points = [...new Set(points)];       
+        }
+        console.log(`Dragon can reach ${this.points.length} unique positions.`);
+    }
+
+}
+
 class Grid {
     constructor() {
         this.grid = [];
         this.dx = 0;
         this.dy = 0;
-
-        this.nextPlotList = [];
+        this.dragonMoves = [];
+        this.sheepPositions = [];
     }
     readFromFile(filename) {
         this.grid = readFileTo2DCharArray(filename);
     }
     createBlank(lengthX,LengthY,starX,starY) {
-        console.log(`Creating blank grid of size ${lengthX}x${LengthY} with dragon at (${starX}, ${starY})`);
         for (let i = 0; i < lengthX; i++) {
             let newline = [];   
             for (let j = 0; j < LengthY; j++) {
@@ -38,67 +101,43 @@ class Grid {
         }
     } 
 
-    plotpoint(movesremaining,partNumber) {
+    plotpoint(x,y, movesRemaining, partNumber) {
+        //console.log(`Plotting point at (${x}, ${y}) with ${movesRemaining} moves remaining.`);
+        if (this.grid[x][y] == '.' || this.grid[x][y] == 'S' || this.grid[x][y] == 'X' || this.grid[x][y] == 'Z') {
+            this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
+            if ( movesRemaining > 0 && partNumber == 2) {
+                 this.grid[x][y] == 'Z'? this.grid[x][y] = 'S' : this.grid[x][y] = '.';
+            }
         
-        let newPlotList = [];
-        this.nextPlotList.forEach( (point) => {
-            console.log(`Current point to process: (${point[0]}, ${point[1]})`);
-            let x = point[0];
-            let y = point[1];
-            //console.log(`Processing point (${x}, ${y}) with ${movesremaining} moves remaining.`);
-            
-            if (partNumber == 1 || (partNumber == 2 )) {
-                if (partNumber == 1 || (partNumber == 2 && movesremaining == 0)) {
-                    this.grid[x][y] == 'S' || this.grid[x][y] == 'Z' ? this.grid[x][y] = 'Z' : this.grid[x][y] = 'X';
-                }
-        
-            // check all 8 possible next moves
-                if (x >= 1 && y >= 2 ) {
-                    newPlotList.push([x - 1, y - 2]);
-                }
-                if (x >= 2 && y >= 1 ) {
-                    newPlotList.push([x - 2, y - 1]);
-                }
-                if (x < this.grid.length - 2 && y >= 1 ) {
-                    newPlotList.push([x + 2, y - 1]);
-                }
-                if (x < this.grid.length - 1 && y >= 2 ) {  
-                    newPlotList.push([x + 1, y - 2]);
-                }
-                if (x >= 1 && y < this.grid[0].length - 2 ) {
-                    newPlotList.push([x - 1, y + 2]);
-                }   
-                if (x >= 2 && y <= this.grid[0].length -1) {
-                    newPlotList.push([x - 2, y + 1]);
-                }
-                if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
-                    newPlotList.push([x + 2, y + 1]);
-                }   
-                if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
-                    newPlotList.push([x + 1, y + 2]);
-                }
+            if (movesRemaining == 0) {
+                return;
+            }
+        // check all 8 possible next moves
+            if (x >= 1 && y >= 2 ) {
+                this.plotpoint(x - 1, y - 2, movesRemaining - 1, partNumber);
+            }
+            if (x >= 2 && y >= 1 ) {
+                this.plotpoint(x - 2, y - 1, movesRemaining - 1, partNumber);
+            }
+            if (x < this.grid.length - 2 && y >= 1 ) {
+                this.plotpoint(x + 2, y - 1, movesRemaining - 1, partNumber);
+            }
+            if (x < this.grid.length - 1 && y >= 2 ) {  
+                this.plotpoint(x + 1, y - 2, movesRemaining - 1, partNumber);
+            }
+            if (x >= 1 && y < this.grid[0].length - 2 ) {
+                this.plotpoint(x - 1, y + 2, movesRemaining - 1, partNumber);
+            }   
+            if (x >= 2 && y <= this.grid[0].length -1) {
+                this.plotpoint(x - 2, y + 1, movesRemaining - 1, partNumber);
+            }
+            if (x < this.grid.length - 2 && y < this.grid[0].length - 1 ) {
+                this.plotpoint(x + 2, y + 1, movesRemaining - 1, partNumber);
+            }   
+            if (x < this.grid.length - 1 && y < this.grid[0].length - 2 ) {
+                this.plotpoint(x + 1, y + 2, movesRemaining - 1, partNumber);
             }
             
-        });
-        this.nextPlotList.length = 0; // clear the list
-        newPlotList.forEach( (point, index) => {
-            // remove duplicates
-            let isDuplicate = false;    
-            for (let k = 0; k < index; k++) {
-                if (point[0] == newPlotList[k][0] && point[1] == newPlotList[k][1]) {
-                    isDuplicate = true;
-                    break;
-                }   
-            }
-            if (!isDuplicate) {
-                this.nextPlotList.push(point);
-            }
-        });
-        newPlotList.forEach( (point) => {
-            this.nextPlotList.push(point);
-        });
-        if (movesremaining > 0) {
-            this.plotpoint(movesremaining - 1,partNumber);
         }
     }
     
@@ -107,11 +146,7 @@ class Grid {
             for (let j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] == 'D') {
                     this.grid[i][j] = ".";
-                    this.nextPlotList.push([i, j]);
-                    if (movesRemaining == 0 )  {
-                        return ;
-                    }
-                    this.plotpoint(movesRemaining, partNumber);
+                    this.plotpoint(i, j, movesRemaining, partNumber);
                 }
             }
         }
@@ -174,27 +209,22 @@ class Grid {
                 }
             }
         }
-        let dragonGrid = new Grid();
-        dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
-        dragonGrid.printGrid();
-        dragonGrid.startPlotting(0,2);
+        let dragonGrid = new dragonPoints(this.grid.length, this.grid[0].length);
+        dragonGrid.addPoint(dX, dY);
         for (let phase = 0; phase < numberOfPhases; phase++) {
             console.log(`--- Phase ${phase + 1} ---`);
-            dragonGrid.plotpoint(1,2);
+            dragonGrid.knightMoves(true);
+            
             for (let k = 0; k < 2; k++) {
-                for (let i = 0; i < this.grid.length; i++) {
-                    for (let j = 0; j < this.grid[i].length; j++) {
-                        if (dragonGrid.grid[i][j] == 'X') {
-                            //console.log(`Dragon can reach (${i}, ${j})`);
-                            if (this.grid[i][j] == 'S') {
-                                //console.log(`Sheep at (${i}, ${j}) was eaten by the dragon.`);
-                                this.grid[i][j] = '.';
-                                sheepThatWereEaten++;
-                            }
-                        }
+                dragonGrid.points.forEach(point => {
+                    let [x, y] = point;
+                    // Mark dragon reachable positions on the grid
+                    if (this.grid[x][y] == 'S') {
+                        this.grid[x][y] = '.';
+                        sheepThatWereEaten++;
                     }
-                }
-                if (k == 0) {this.moveSheep();}
+                });
+                if (k == 0) {this.moveSheep();} 
             }
             console.log(`After phase ${phase + 1}, sheep eaten so far: ${sheepThatWereEaten}`);
         }
@@ -219,9 +249,10 @@ example0.printGrid();
 
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
-example2.printGrid();
+example2.printGrid
 console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
 
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
 console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
+
