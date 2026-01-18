@@ -97,17 +97,13 @@ class Grid {
         let sheepCount = 0;
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == 'Z') {
-                    sheepCount++;
-                }
+                if (this.grid[i][j] == 'Z') {sheepCount++;}
             }
         }    return sheepCount;
     }
 
     printGrid() {
-        for (let i = 0; i < this.grid.length; i++) {
-            console.log(this.grid[i].join(''));
-        }       
+        for (let i = 0; i < this.grid.length; i++) {console.log(this.grid[i].join(''));}       
     }
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
@@ -180,7 +176,6 @@ console.log(`Sheep reached in puzzle1: `, puzzle1.countAllSheep());
 
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
-example2.printGrid
 console.log ('Sheep that were eaten in Example 2: ' , example2.part2Sequence(3));
 
 let puzzle2 = new Grid();
