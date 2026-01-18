@@ -20,15 +20,11 @@ class dragonPoints {
         this.yRange = y;
     }
 
-    addPoint(x, y) {
-        this.points.push([x,y]);
-    }
+    addPoint(x, y) {this.points.push([x,y]);}
 
     exists(x,y){
         for (let point of this.points) {
-            if (point[0] == x && point[1] == y) {
-                return true;
-            }       
+            if (point[0] == x && point[1] == y) {return true;}       
         }
         return false;   
     }
@@ -38,39 +34,18 @@ class dragonPoints {
         this.points.forEach(point => {
             let [x, y] = point;
             // Generate all 8 possible knight moves
-            if (x >= 1 && y >= 2  && !this.exists(x - 1, y - 2)) {
-                newPoints.push([x - 1, y - 2]);
-            }
-            if (x >= 2 && y >= 1  && !this.exists(x - 2, y - 1)) {
-                newPoints.push([x - 2, y - 1]);
-            }   
-            if (x < this.xRange - 2 && y >= 1  && !this.exists(x + 2, y - 1)) {
-                newPoints.push([x + 2, y - 1]);
-            }
-            if (x < this.xRange - 1 && y >= 2 && !this.exists(x + 1, y - 2)) {
-                newPoints.push([x + 1, y - 2]);
-            }   
-            if (x >= 1 && y < this.yRange - 2 && !this.exists(x - 1, y + 2)) {
-                newPoints.push([x - 1, y + 2]);
-            }
-            if (x >= 2 && y <= this.yRange -1 && !this.exists(x - 2, y + 1)) {
-                newPoints.push([x - 2, y + 1]);
-            }
-            if (x < this.xRange - 2 && y < this.yRange - 1  && !this.exists(x + 2, y + 1)) {
-                newPoints.push([x + 2, y + 1]);
-            }   
-            if (x < this.xRange - 1 && y < this.yRange - 2 && !this.exists(x + 1, y + 2)) {
-                newPoints.push([x + 1, y + 2]);
-            }
+            if (x >= 1 && y >= 2  && !this.exists(x - 1, y - 2)) {newPoints.push([x - 1, y - 2]);}
+            if (x >= 2 && y >= 1  && !this.exists(x - 2, y - 1)) {newPoints.push([x - 2, y - 1]);}   
+            if (x < this.xRange - 2 && y >= 1  && !this.exists(x + 2, y - 1)) {newPoints.push([x + 2, y - 1]);}
+            if (x < this.xRange - 1 && y >= 2 && !this.exists(x + 1, y - 2)) {newPoints.push([x + 1, y - 2]);}   
+            if (x >= 1 && y < this.yRange - 2 && !this.exists(x - 1, y + 2)) {newPoints.push([x - 1, y + 2]);}
+            if (x >= 2 && y <= this.yRange -1 && !this.exists(x - 2, y + 1)) {newPoints.push([x - 2, y + 1]);}
+            if (x < this.xRange - 2 && y < this.yRange - 1  && !this.exists(x + 2, y + 1)) {newPoints.push([x + 2, y + 1]);}   
+            if (x < this.xRange - 1 && y < this.yRange - 2 && !this.exists(x + 1, y + 2)) {newPoints.push([x + 1, y + 2]);}
         });
-        if (deleteLastGeneration) {
-            this.points = [];
-        
-        }
+        if (deleteLastGeneration) {this.points = [];}
         newPoints.forEach(point => {
-            if (!this.exists(point[0], point[1])) {
-                this.points.push(point);
-            }
+            if (!this.exists(point[0], point[1])) {this.points.push(point);}
         });     
 
     }
@@ -191,9 +166,7 @@ class Grid {
         let dX = 0; let dY = 0;
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == 'D') {
-                    dX = i; dY = j; break;
-                }
+                if (this.grid[i][j] == 'D') {dX = i; dY = j; break;}
             }
         }
         let dragonGrid = new dragonPoints(this.grid.length, this.grid[0].length);
