@@ -132,47 +132,6 @@ class Grid {
             }
         }
     }
-   ////////////////////////////////////////////////////////////////////////////////////////////////////
-   // THIS ALGORITH WAS DEEMED INNEFFICENT AND IS NOW CONSIDERED DEPRECATED                          //
-   ////////////////////////////////////////////////////////////////////////////////////////////////////
-    part2Sequence(numberOfPhases) {
-        let sheepThatWereEaten = 0;
-        let dX = 0; let dY = 0;
-        for (let i = 0; i < this.grid.length; i++) {
-            for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == 'D') {
-                    dX = i; dY = j; break;
-                }
-            }
-        }
-        let dragonGrid = new Grid();
-        for (let phase = 0; phase < numberOfPhases; phase++) {
-            console.log(`--- Phase ${phase + 1} ---`);
-            dragonGrid = new Grid();
-            dragonGrid.createBlank(this.grid.length,this.grid[0].length,dX,dY); 
-            dragonGrid.startPlotting(phase + 1,2);
-            
-            dragonGrid.printGrid();
-            //this.printGrid();
-            for (let k = 0; k < 2; k++) {
-                for (let i = 0; i < this.grid.length; i++) {
-                    for (let j = 0; j < this.grid[i].length; j++) {
-                        if (dragonGrid.grid[i][j] == 'X') {
-                            //console.log(`Dragon can reach (${i}, ${j})`);
-                            if (this.grid[i][j] == 'S') {
-                                //console.log(`Sheep at (${i}, ${j}) was eaten by the dragon.`);
-                                this.grid[i][j] = '.';
-                                sheepThatWereEaten++;
-                            }
-                        }
-                    }
-                }
-                if (k == 0) {this.moveSheep();}
-            }
-            console.log(`After phase ${phase + 1}, sheep eaten so far: ${sheepThatWereEaten}`);
-        }
-        return sheepThatWereEaten;
-    }
 }
 
 let example1 = new Grid();
@@ -189,12 +148,3 @@ let example0 = new Grid();
 example0.readFromFile("example0.txt");
 example0.startPlotting(3,2);
 example0.printGrid();
-
-let example2 = new Grid();
-example2.readFromFile("example2.txt");
-example2.printGrid
-console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
-
-let puzzle2 = new Grid();
-puzzle2.readFromFile("puzzle2.txt");
-console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));

@@ -88,19 +88,6 @@ class Grid {
     readFromFile(filename) {
         this.grid = readFileTo2DCharArray(filename);
     }
-    createBlank(lengthX,LengthY,starX,starY) {
-        for (let i = 0; i < lengthX; i++) {
-            let newline = [];   
-            for (let j = 0; j < LengthY; j++) {
-                if (i == starX && j == starY) {
-                    newline.push('D');
-                } else {
-                    newline.push('.');
-                }           
-            }
-            this.grid.push(newline);
-        }
-    } 
 
     plotpoint(x,y, movesRemaining, partNumber) {
         //console.log(`Plotting point at (${x}, ${y}) with ${movesRemaining} moves remaining.`);
@@ -195,7 +182,6 @@ class Grid {
                             this.grid[i][j] = '.';
                         }
                     }
-
             }
         }
     }
@@ -234,18 +220,18 @@ class Grid {
 let example1 = new Grid();
 example1.readFromFile("example1.txt")
 example1.startPlotting(3,1);
-console.log(`Sheep reached in example1: ${example1.countAllSheep()}`);
+console.log('Sheep reached in example1:' ,example1.countAllSheep());
 
 let puzzle1 = new Grid();
 puzzle1.readFromFile("puzzle1.txt")
 puzzle1.startPlotting(4,1);
-console.log(`Sheep reached in puzzle1: ${puzzle1.countAllSheep()}`);
+console.log(`Sheep reached in puzzle1: `, puzzle1.countAllSheep());
 
 let example2 = new Grid();
 example2.readFromFile("example2.txt");
 example2.printGrid
-console.log ('Sheep that were eaten: ' , example2.part2Sequence(3));
+console.log ('Sheep that were eaten in Example 2: ' , example2.part2Sequence(3));
 
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
-console.log ('Sheep that were eaten: ' , puzzle2.part2Sequence(20));
+console.log ('Sheep that were eaten in Puzzle 2: ' , puzzle2.part2Sequence(20));
