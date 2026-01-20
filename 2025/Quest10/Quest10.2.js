@@ -108,29 +108,31 @@ class Grid {
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
             for (let j = 0; j < this.grid[i].length; j++) {
-                    if (this.grid[i -1][j] == 'S') {
-                        if (this.grid[i][j] == '#') {
-                            this.grid[i][j] = 's';
-                        }
-                        else if (this.grid[i][j] = '.') {
-                            this.grid[i][j] = 'S';
-                        }
-                        this.grid[i - 1][j] = '.';
+                    
+                if (this.grid[i -1][j] == 'S') {
+                        
+                    if (this.grid[i][j] == '#') {
+                        this.grid[i][j] = 's';
                     }
-                    else if (this.grid[i - 1][j] == 's') {
-                        if (this.grid[i][j] == '#') {
-                            this.grid[i][j] = 's';
-                        }
-                        else if (this.grid[i][j] = '.') {
-                            this.grid[i][j] = 'S';
-                        }
-                        this.grid[i - 1][j] = '#'
+                    else if (this.grid[i][j] = '.') {
+                        this.grid[i][j] = 'S';
                     }
-                    else if (this.grid[i - 1][j] == '.') {
-                        if (this.grid[i][j] != '#') {
-                            this.grid[i][j] = '.';
-                        }
+                    this.grid[i - 1][j] = '.';
+                }
+                else if (this.grid[i - 1][j] == 's') {
+                    if (this.grid[i][j] == '#') {
+                        this.grid[i][j] = 's';
                     }
+                    else if (this.grid[i][j] = '.') {
+                        this.grid[i][j] = 'S';
+                    }
+                    this.grid[i - 1][j] = '#'
+                }
+                else if (this.grid[i - 1][j] == '.') {
+                    if (this.grid[i][j] != '#') {
+                        this.grid[i][j] = '.';
+                    }
+                }
             }
         }
     }
