@@ -107,8 +107,7 @@ class Grid {
     }
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
-            for (let j = 0; j < this.grid[i].length; j++) {
-                    
+            for (let j = 0; j < this.grid[i].length; j++) {    
                 if (this.grid[i -1][j] == 'S') {
                         
                     if (this.grid[i][j] == '#') {
@@ -149,7 +148,6 @@ class Grid {
         dragonGrid.addPoint(dX, dY);
         for (let phase = 0; phase < numberOfPhases; phase++) {
             dragonGrid.knightMoves(true);
-            
             for (let k = 0; k < 2; k++) {
                 dragonGrid.points.forEach(point => {
                     let [x, y] = point;
