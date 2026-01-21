@@ -105,33 +105,26 @@ class Grid {
     printGrid() {
         for (let i = 0; i < this.grid.length; i++) {console.log(this.grid[i].join(''));}       
     }
+
+    moveIndividualSheep(i, j) {
+        if (this.grid[i -1][j] == 'S') {
+            if (this.grid[i][j] == '#') {this.grid[i][j] = 's';}
+            else if (this.grid[i][j] = '.') {this.grid[i][j] = 'S';}
+            this.grid[i - 1][j] = '.';
+        }
+        else if (this.grid[i - 1][j] == 's') {
+            if (this.grid[i][j] == '#') {this.grid[i][j] = 's';}
+            else if (this.grid[i][j] = '.') {this.grid[i][j] = 'S';}
+            this.grid[i - 1][j] = '#'
+        }
+        else if (this.grid[i - 1][j] == '.') {
+            if (this.grid[i][j] != '#') {this.grid[i][j] = '.';}
+        }
+    }
     moveSheep() {
         for (let i = this.grid.length - 1; i > 0; i--) {
-            for (let j = 0; j < this.grid[i].length; j++) {    
-                if (this.grid[i -1][j] == 'S') {
-                        
-                    if (this.grid[i][j] == '#') {
-                        this.grid[i][j] = 's';
-                    }
-                    else if (this.grid[i][j] = '.') {
-                        this.grid[i][j] = 'S';
-                    }
-                    this.grid[i - 1][j] = '.';
-                }
-                else if (this.grid[i - 1][j] == 's') {
-                    if (this.grid[i][j] == '#') {
-                        this.grid[i][j] = 's';
-                    }
-                    else if (this.grid[i][j] = '.') {
-                        this.grid[i][j] = 'S';
-                    }
-                    this.grid[i - 1][j] = '#'
-                }
-                else if (this.grid[i - 1][j] == '.') {
-                    if (this.grid[i][j] != '#') {
-                        this.grid[i][j] = '.';
-                    }
-                }
+            for (let j = 0; j < this.grid[i].length; j++) {
+                this.moveIndividualSheep(i, j);
             }
         }
     }
@@ -148,6 +141,7 @@ class Grid {
         dragonGrid.addPoint(dX, dY);
         for (let phase = 0; phase < numberOfPhases; phase++) {
             dragonGrid.knightMoves(true);
+            
             for (let k = 0; k < 2; k++) {
                 dragonGrid.points.forEach(point => {
                     let [x, y] = point;
@@ -162,7 +156,35 @@ class Grid {
         }
         return sheepThatWereEaten;
     }
+    /********************************************
+     * -1 = sheep remains in play               *
+     *  0 = sheep reached bottom row and remain *
+     *  1 = all sheep eaten                     *
+     ********************************************/
+    sheepRemainingRating() {
+        for (let i = 0; i < this.grid.length; i++) {
+            for (let j = 0; j < this.grid[i].length; j++) {
+                if (this.grid[i][j] == 'S') {
+                    if (i < this.grid.length - 2) {
+                        return -1;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+            }
+        }
+        return 1;
+    }
+
+    part3DragonMove(i, j) {
+        
+    }
+    part3Sequence() {
+
+    }
 }
+
 
 let example1 = new Grid();
 example1.readFromFile("example1.txt")
@@ -181,3 +203,7 @@ console.log ('Sheep that were eaten in Example 2: ' , example2.part2Sequence(3))
 let puzzle2 = new Grid();
 puzzle2.readFromFile("puzzle2.txt");
 console.log ('Sheep that were eaten in Puzzle 2: ' , puzzle2.part2Sequence(20));
+
+let example3a = new Grid();
+example3a.readFromFile("example3a.txt");
+example3a.printGrid();
