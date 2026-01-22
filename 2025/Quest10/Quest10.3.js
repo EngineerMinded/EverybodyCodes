@@ -107,7 +107,7 @@ class Grid {
     }
 
     moveIndividualSheep(i, j) {
-        console.log(`Moving sheep at (${i}, ${j})`);
+        //console.log(`Moving sheep at (${i}, ${j})`);
         if (this.grid[i -1][j] == 'S') {
             if (this.grid[i][j] == '#') {this.grid[i][j] = 's';}
             else if (this.grid[i][j] = '.') {this.grid[i][j] = 'S';}
@@ -165,40 +165,61 @@ class Grid {
     sheepStillRemains() {
         for (let i = 0; i < this.grid.length; i++) {
             for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == 'S') {
-                    return true;
+                if (this.grid[i][j] == 'S' || this.grid[i][j] == 's') {
+                    return true
                 }
             }
+            return this.grid.length;
         }
         return false;
     }
 
-     moveSheepRow(row) {
+    lowestSheepLevel(column) {
+        for (let j = 0; j < this.grid[0].length; j++) {
+            if (this.grid[column][j] == 'S' || this.grid[column][j] == 's') {
+                return j;
+            }
+            return this.grid[0].length; 
+        }  
+    }
+
+     moveSheepRow(row, h, j) {
         for (let i = this.grid.length - 1; i > 0; i--) {
-            this.moveIndividualSheep(i, row);
+            if (h != i && j != row) this.moveIndividualSheep(i, row); console.log(`Moved sheep in row ${row}`);
         }
     }
 
+
+    /**************************************************************
+     * LOOPS BETWEEN 0,0 and 2,1:                                 *
+     **************************************************************/
     part3Moves(i, j, sheepMove) {
+        console.log(`Part 3 move at (${i}, ${j}) with sheepMove ${sheepMove}`);
         if (this.grid[i][j] == 'S') {
             this.grid[i][j] = '.';
         }
         if (!(this.sheepStillRemains())) {
             return 1;
         }
-        this.moveSheepRow(sheepMove);
+        this.moveSheepRow(sheepMove, i, j);
         if (!(this.sheepStillRemains())) {
             return 0;
         }
-        sheepMove += 1;
-        if (sheepMove >= this.grid[0].length) {sheepMove = 0;}      
-
+        
         let totalfinishes = 0;
 
         // Check all 8 possible knight moves
-        for (let k = 0; k < sheepMove; k++) {
+        for (let k = 0; k < this.grid[0].length; k++) {
             if (k != sheepMove) {
-                if (i >= 1 && j >= 2 ) {totalfinishes += this.part3Moves(i - 1, j - 2, k);}
+                if (i >= 1 && j >= 2  &&  this.lowestSheepLevel(i - 1) >= j + 1) {totalfinishes += this.part3Moves(i - 1, j - 2, k);}
+                if (i >= 2 && j >= 1  && this.lowestSheepLevel(i - 2) >= j + 1) {totalfinishes += this.part3Moves( i - 2, j - 1, k);}
+                if (i < this.grid.length - 2 && j >= 1  && this.lowestSheepLevel(i + 2) >= j + 1) {totalfinishes += this.part3Moves( i + 2, j - 1, k);}
+                if (i < this.grid.length - 1 && j >= 2 && this.lowestSheepLevel(i + 1) >= j + 1) {totalfinishes += this.part3Moves( i + 1, j - 2, k);}
+                if (i >= 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i - 1) >= j + 1) {totalfinishes += this.part3Moves( i - 1, j + 2, k);}
+                if (i >= 2 && j <= this.grid[0].length -1 && this.lowestSheepLevel(i - 2) >= j + 1) {totalfinishes += this.part3Moves( i - 2, j + 1, k);}
+                if (i < this.grid.length - 2 && j < this.grid[0].length - 1 && this.lowestSheepLevel(i + 2) >= j + 1) {totalfinishes += this.part3Moves( i + 2, j + 1, k);}
+                if (i < this.grid.length - 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i + 1) >= j + 1) {totalfinishes += this.part3Moves( i + 1, j + 2, k);}
+                /*
                 if (i >= 2 && j >= 1 ) {totalfinishes += this.part3Moves( i - 2, j - 1, k);}
                 if (i < this.grid.length - 2 && j >= 1 ) {totalfinishes += this.part3Moves( i + 2, j - 1, k);} 
                 if (i < this.grid.length - 1 && j >= 2 ) {totalfinishes += this.part3Moves( i + 1, j - 2, k);}
@@ -206,6 +227,7 @@ class Grid {
                 if (i >= 2 && j <= this.grid[0].length -1 ) {totalfinishes += this.part3Moves( i - 2, j + 1, k);}
                 if (i < this.grid.length - 2 && j < this.grid[0].length - 1) {totalfinishes += this.part3Moves( i + 2, j + 1, k);}
                 if (i < this.grid.length - 1 && j < this.grid[0].length - 2) {totalfinishes += this.part3Moves( i + 1, j + 2, k);}
+                */
             }
         }
         return totalfinishes;
@@ -260,6 +282,6 @@ console.log('Number of ways for Example 3a: ', example3a.part3Moves(startX,start
 let example3b = new Grid();
 example3b.readFromFile("example3b.txt");
 let [startXb, startYb] = example3b.findpartStartPoint();
-console.log('Number of ways for Example 3b: ', example3b.part3Moves(startXb,startYb, 0));
+console.log('Number of ways for Example 3b: ', example3b.part3Move(startXb,startYb));
 let puzzle3 = new Grid();
 
