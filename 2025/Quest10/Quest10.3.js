@@ -195,34 +195,35 @@ class Grid {
      **************************************************************/
     part3Moves(i, j, sheepMove) {
         console.log(`Part 3 move at (${i}, ${j}) with sheepMove ${sheepMove}`);
+
+        if (this.grid[i][j] == 'S') {
+            this.grid[i][j] = '.';
+        }
+
+        if (!(this.sheepStillRemains())) {
+            return 1;
+        }
         
         this.moveSheepRow(sheepMove, i, j);
         if (!(this.sheepStillRemains())) {
             return 0;
         }
 
-        
-        if (this.grid[i][j] == 'S') {
-            this.grid[i][j] = '.';
-        }
-        if (!(this.sheepStillRemains())) {
-            return 1;
-        }
-        
         let totalfinishes = 0;
 
         // Check all 8 possible knight moves
         for (let k = 0; k < this.grid[0].length; k++) {
             if (k != sheepMove) {
-                if (i >= 1 && j >= 2  &&  this.lowestSheepLevel(i - 1) >= j ) {totalfinishes += this.part3Moves(i - 1, j - 2, k);}
-                if (i >= 2 && j >= 1  && this.lowestSheepLevel(i - 2) >= j ) {totalfinishes += this.part3Moves( i - 2, j - 1, k);}
-                if (i < this.grid.length - 2 && j >= 1  && this.lowestSheepLevel(i + 2) >= j ) {totalfinishes += this.part3Moves( i + 2, j - 1, k);}
-                if (i < this.grid.length - 1 && j >= 2 && this.lowestSheepLevel(i + 1) >= j ) {totalfinishes += this.part3Moves( i + 1, j - 2, k);}
-                if (i >= 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i - 1) >= j ) {totalfinishes += this.part3Moves( i - 1, j + 2, k);}
-                if (i >= 2 && j <= this.grid[0].length -1 && this.lowestSheepLevel(i - 2) >= j ) {totalfinishes += this.part3Moves( i - 2, j + 1, k);}
-                if (i < this.grid.length - 2 && j < this.grid[0].length - 1 && this.lowestSheepLevel(i + 2) >= j ) {totalfinishes += this.part3Moves( i + 2, j + 1, k);}
-                if (i < this.grid.length - 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i + 1) >= j ) {totalfinishes += this.part3Moves( i + 1, j + 2, k);}
-                /*
+                
+                if (i >= 1 && j >= 2  &&  this.lowestSheepLevel(i - 1) <= j ) {totalfinishes += this.part3Moves(i - 1, j - 2, k);}
+                if (i >= 2 && j >= 1  && this.lowestSheepLevel(i - 2) <= j ) {totalfinishes += this.part3Moves( i - 2, j - 1, k);}
+                if (i < this.grid.length - 2 && j >= 1  && this.lowestSheepLevel(i + 2) <= j ) {totalfinishes += this.part3Moves( i + 2, j - 1, k);}
+                if (i < this.grid.length - 1 && j >= 2 && this.lowestSheepLevel(i + 1) <= j ) {totalfinishes += this.part3Moves( i + 1, j - 2, k);}
+                if (i >= 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i - 1) <= j ) {totalfinishes += this.part3Moves( i - 1, j + 2, k);}
+                if (i >= 2 && j <= this.grid[0].length -1 && this.lowestSheepLevel(i - 2) <= j ) {totalfinishes += this.part3Moves( i - 2, j + 1, k);}
+                if (i < this.grid.length - 2 && j < this.grid[0].length - 1 && this.lowestSheepLevel(i + 2) <= j ) {totalfinishes += this.part3Moves( i + 2, j + 1, k);}
+                if (i < this.grid.length - 1 && j < this.grid[0].length - 2 && this.lowestSheepLevel(i + 1) <= j ) {totalfinishes += this.part3Moves( i + 1, j + 2, k);}
+                /* 
                 if (i >= 2 && j >= 1 ) {totalfinishes += this.part3Moves( i - 2, j - 1, k);}
                 if (i < this.grid.length - 2 && j >= 1 ) {totalfinishes += this.part3Moves( i + 2, j - 1, k);} 
                 if (i < this.grid.length - 1 && j >= 2 ) {totalfinishes += this.part3Moves( i + 1, j - 2, k);}
