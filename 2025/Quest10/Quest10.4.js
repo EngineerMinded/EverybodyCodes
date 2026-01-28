@@ -164,12 +164,11 @@ class Grid {
      ********************************************/
     sheepStillRemains(gridCopy) {
         for (let i = 0; i < gridCopy; i++) {
-            for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == 'S' || this.grid[i][j] == 's') {
+            for (let j = 0; j < gridCopy[i].length; j++) {
+                if (gridCopy[i][j] == 'S' || gridCopy[i][j] == 's') {
                     return true
                 }
             }
-            return this.grid.length;
         }
         return false;
     }
@@ -183,8 +182,8 @@ class Grid {
         }  
     }
 
-     moveSheepRow(row, h, j) {
-        for (let i = this.grid.length - 1; i > 0; i--) {
+     moveSheepRow(row, h, j, gridCopy) {
+        for (let i = gridCopy.length - 1; i > 0; i--) {
             if (h != i && j != row) {this.moveIndividualSheep(i, row); console.log(`Moved sheep in row ${row}`);}
         }
     }
@@ -201,7 +200,7 @@ class Grid {
             cloneGrid[i][j] = '.';
         }
 
-        if (!(cloneGrid.sheepStillRemains())) {
+        if (!(sheepStillRemains(cloneGrid))) {
             return 1;
         }
         
@@ -239,9 +238,10 @@ class Grid {
     }
 
     part3Move(startX, startY) {
+        let localGridCopy = this.grid;
         let total  = 0;
-        for (let k = 0; k < this.grid[0].length; k++) {
-            total += this.part3Moves(startX, startY, k);
+        for (let k = 0; k < localGridCopy[0].length; k++) {
+            total += this.part3Moves(startX, startY, k, localGridCopy);
         }
         return total;
     }
