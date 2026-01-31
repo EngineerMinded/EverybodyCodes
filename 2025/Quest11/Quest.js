@@ -23,6 +23,7 @@ function parseNumbers(str) {
     .map(num => parseInt(num, 10));  // convert each to integer
 }
 
+// SWITCH THE PHASE BACK AND FORTH AS NEEDED
 function switchPhaseIfNeeded(currentPhase, listOfNumbers) {
     var phase1 = true;
     var phase2 = true;
@@ -35,6 +36,7 @@ function switchPhaseIfNeeded(currentPhase, listOfNumbers) {
     return currentPhase;
 }
 
+// ARE ALL THE NUMBERS THE SAME?
 function flockIsBalanced(listOfNumbers) {
     for (var i = 1; i < listOfNumbers.length; i++) {
         if (listOfNumbers[i] != listOfNumbers[i - 1]) return false; 
@@ -42,20 +44,20 @@ function flockIsBalanced(listOfNumbers) {
     return true;
 }
 
+// THIS WASN'T NEEDED AFTER ALL BUT, LEFT IT IN FOR NOW
 function reduceNumberListtoLowestNumber(listOfNumbers) {
     let minNumber = Math.min(...listOfNumbers);
     return listOfNumbers.map(num => num - minNumber);
 }
 
-function flockCalculation(listOfNumbers, numberOfRounds, part2, part3 = false) {
+// THE ALGORITHM FOR PARTS 1 AND 2
+function flockCalculation(listOfNumbers, numberOfRounds, part2) {
     let phase = true;
 
     let part2FlockBalanced = 0; 
     let multiplier = 1;
     do {
-        if (part3) {
-            listOfNumbers = reduceNumberListtoLowestNumber(listOfNumbers);
-        }
+
         for (var a = 0; a < numberOfRounds; a++) {
             //multiplier = determineMultipler(listOfNumbers);
             phase = switchPhaseIfNeeded(phase, listOfNumbers);
@@ -90,13 +92,12 @@ function flockCalculation(listOfNumbers, numberOfRounds, part2, part3 = false) {
     return returnThis;
 }
 
+// WHAT THE HELL? THIS WAS EASIER THAN I THOUGHT!
 function part3(listOfNumbers) {
     let meanOfNumbers = listOfNumbers.reduce((a, b) => a + b, 0) / listOfNumbers.length;
     let returnTHis = 0;
     listOfNumbers.forEach(num => {
-        if (num > meanOfNumbers) {
-            returnTHis += (num - meanOfNumbers);
-        }
+        if (num > meanOfNumbers)  returnTHis += (num - meanOfNumbers);
     });
     return returnTHis;
 
@@ -109,7 +110,7 @@ console.log("part 1: " ,flockCalculation(parseNumbers("3 2 19 14 18 10"),10, fal
 //PART TWO:
 console.log("Sample 2: " ,flockCalculation(parseNumbers("9 1 1 4 9 6"),1, true));
 console.log("Another Sample 2: " ,flockCalculation(parseNumbers("805 706 179 48 158 150 232 885 598 524 423"),1, true));
-console.log("Part 2: " ,flockCalculation((readNumbersFromFile("part2.txt")),1, true, true));
+console.log("Part 2: " ,flockCalculation((readNumbersFromFile("part2.txt")),1, true));
 
 // Part THREE:
 console.log("part 3: " ,part3((readNumbersFromFile("part3.txt"))));
