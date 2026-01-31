@@ -2,6 +2,8 @@
 // Everybody Codes
 // Quest 11
 
+// DAMN: Got all three parts!
+
 const fs = require('fs');
 
 function readNumbersFromFile(filename) {
@@ -88,6 +90,18 @@ function flockCalculation(listOfNumbers, numberOfRounds, part2, part3 = false) {
     return returnThis;
 }
 
+function part3(listOfNumbers) {
+    let meanOfNumbers = listOfNumbers.reduce((a, b) => a + b, 0) / listOfNumbers.length;
+    let returnTHis = 0;
+    listOfNumbers.forEach(num => {
+        if (num > meanOfNumbers) {
+            returnTHis += (num - meanOfNumbers);
+        }
+    });
+    return returnTHis;
+
+}
+
 // PART ONE:
 console.log("Sample 1: " ,flockCalculation(parseNumbers("9 1 1 4 9 6"),10, false)); 
 console.log("part 1: " ,flockCalculation(parseNumbers("3 2 19 14 18 10"),10, false));
@@ -98,4 +112,4 @@ console.log("Another Sample 2: " ,flockCalculation(parseNumbers("805 706 179 48 
 console.log("Part 2: " ,flockCalculation((readNumbersFromFile("part2.txt")),1, true, true));
 
 // Part THREE:
-console.log("part 3: " ,flockCalculation((readNumbersFromFile("part3.txt")),1, true, true));
+console.log("part 3: " ,part3((readNumbersFromFile("part3.txt"))));
