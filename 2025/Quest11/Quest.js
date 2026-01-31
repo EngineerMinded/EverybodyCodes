@@ -97,7 +97,6 @@ function part3(listOfNumbers) {
         if (num > meanOfNumbers)  returnTHis += (num - meanOfNumbers);
     });
     return returnTHis;
-
 }
 
 // PART ONE:
