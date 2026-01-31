@@ -53,11 +53,9 @@ function reduceNumberListtoLowestNumber(listOfNumbers) {
 // THE ALGORITHM FOR PARTS 1 AND 2
 function flockCalculation(listOfNumbers, numberOfRounds, part2) {
     let phase = true;
-
     let part2FlockBalanced = 0; 
     let multiplier = 1;
     do {
-
         for (var a = 0; a < numberOfRounds; a++) {
             //multiplier = determineMultipler(listOfNumbers);
             phase = switchPhaseIfNeeded(phase, listOfNumbers);
@@ -79,11 +77,10 @@ function flockCalculation(listOfNumbers, numberOfRounds, part2) {
         }
         part2FlockBalanced+= multiplier;
     } while (part2 && !flockIsBalanced(listOfNumbers));
-    // Answer for Part 2 here:
-    if (part2) {
-        return part2FlockBalanced;
-    }   
 
+    // Answer for Part 2 here:
+    if (part2) return part2FlockBalanced;
+       
     // Answer for Part 1 here:
     let returnThis = 0;
     for (var i = 0; i < listOfNumbers.length; i++) {
