@@ -9,7 +9,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <cctype>
+
+#include "ignitionlist.hh"
 using namespace std;
+
+#define GRID vector<vector<int>>	
 
 vector<vector<int>> readIntGrid(const string &path) {
 	ifstream in(path);
@@ -18,17 +22,20 @@ vector<vector<int>> readIntGrid(const string &path) {
 	vector<vector<int>> grid;
 	string line;
 	while (std::getline(in, line)) {
-		bool all_ws = true;
-		for (char c : line) if (!isspace((unsigned char)c)) { all_ws = false; break; }
-		if (all_ws) continue;
-
-		istringstream iss(line);
-		vector<int> row;
-		int val;
-		while (iss >> val) row.push_back(val);
-		if (!row.empty()) grid.push_back(move(row));
+		vector<int> ve;
+		for (char &c : line) {
+			ve.push_back(c - '0');
+		}
+		grid.push_back(ve);
 	}
 	return grid;
+}
+
+int main() {
+	GRID example1 = readIntGrid("example1.txt");
+	IgnitionList ex1 = IgnitionList();
+	cout << "Example 1 Ignited Cells: " << ex1.routeIgnitionPath(example1) << endl;	
+
 }
 
 

@@ -22,6 +22,14 @@ public:
         y = yCoord;
         nextItem = nullptr;
     }
+private:
+    int countItems() {
+        if (nextItem == nullptr) {
+            return 0;
+        } else {
+            return 1 + nextItem->countItems();
+        }
+    }               
 
     void addItem(int xCoord, int yCoord) {
         if (nextItem == nullptr) {
@@ -42,10 +50,26 @@ public:
     }   
 
     void routeIgnitionPath(vector<vector<int>>& grid, int x, int y) {
-        
+        cout << "Igniting cell: (" << x << ", " << y << ") with value " << grid[x][y] << endl;
+        addItem(x,y);
+        // Check all 4 directions
+        const vector<pair<int, int>> directions = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        for (const auto& dir : directions) {
+            int newX = x + dir.first;
+            int newY = y + dir.second;
+            // Check bounds
+            if (newX >= 0 && newX < grid.size() && newY >= 0 && newY < grid[0].size()) {
+                // Check if the cell is ignitable and not already in the list
+                if ((grid[newX][newY] ==  grid[x][y] || grid[newX][newY] < grid[x][y] )&& !exists(newX, newY)) {
+                    routeIgnitionPath(grid, newX, newY);
+                }
+            }
+        }
     }
-    void routeIgnitionPath(std::vector<std::vector<int>>& grid) {
+public:
+    int routeIgnitionPath(std::vector<std::vector<int>>& grid) {
        routeIgnitionPath(grid, 0, 0);
+       return countItems();
     }
     
     
