@@ -17,6 +17,23 @@ public:
         nextItem = nullptr;
     }
 
+    IgnitionList makeDuplicate() {
+        IgnitionList duplicate = IgnitionList();
+        duplicate.x = x;
+        duplicate.y = y;
+        if (nextItem != nullptr) {
+            duplicate.nextItem = new IgnitionList(nextItem->makeDuplicate());
+        }
+        return duplicate;   
+    }
+
+    void addFromAnotherList(const IgnitionList &other) {
+        addItem(other.x, other.y);
+        if (other.nextItem != nullptr) {
+            addFromAnotherList(*other.nextItem);
+        }
+    }
+
     IgnitionList(int xCoord, int yCoord) {
         x = xCoord; y = yCoord;
         nextItem = nullptr;
@@ -51,8 +68,7 @@ private:
         return (grid[x1][y1] == grid[x2][y2]);
 
     }
-    void routeIgnitionPath(vector<vector<int>>& grid, int x, int y, IgnitionList& il) {
-        //cout << "Igniting cell: (" << x << ", " << y << ") with value " << grid[x][y] << endl;
+    void routeIgnitionPath(vector<vector<int>>& grid, int x, int y) {
 
         addItem(x,y);
     
@@ -64,8 +80,8 @@ private:
             // Check bounds
             if (newX >= 0 && newX < grid.size() && newY >= 0 && newY < grid[0].size()) {
                 // Check if the cell is ignitable and not already in the list
-                if ((grid[newX][newY] ==  grid[x][y] || grid[newX][newY] < grid[x][y] )&& !exists(newX, newY) && il.exists(newX, newY) == false) {
-                    routeIgnitionPath(grid, newX, newY, il);
+                if ((grid[newX][newY] ==  grid[x][y] || grid[newX][newY] < grid[x][y] )&& !exists(newX, newY)) {
+                    routeIgnitionPath(grid, newX, newY);
                 }
             }
         }
@@ -74,15 +90,15 @@ private:
 public:
     int routeIgnitionPath(std::vector<std::vector<int>>& grid, bool complimentary = false) {
        IgnitionList blank = IgnitionList();
-       routeIgnitionPath(grid, 0, 0, blank);
+       routeIgnitionPath(grid, 0, 0);
        if (complimentary) {
-           routeIgnitionPath(grid, grid.size() - 1, grid[0].size() - 1, blank);
+           routeIgnitionPath(grid, grid.size() - 1, grid[0].size() - 1);
        }
        return countItems();
     }
     
-    int ingnitionPathAt(std::vector<std::vector<int>>& grid, int x, int y, IgnitionList il) {
-       routeIgnitionPath(grid, x, y, il);
+    int ingnitionPathAt(std::vector<std::vector<int>>& grid, int x, int y) {
+       routeIgnitionPath(grid, x, y);
        return countItems();
     }
 
