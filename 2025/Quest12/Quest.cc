@@ -32,22 +32,30 @@ vector<vector<int>> readIntGrid(const string &path) {
 }
 
 int findHighestGreedyApproach(const GRID &grid, int rounds) {
-	int highest = 0;
+	int total = 0;
+	int highest = grid.size() * grid[0].size(); // minimum ignitable is starting cell only
 	IgnitionList standing = IgnitionList();
 	for (int m = 0; m < rounds; m++) {
+		IgnitionList nextStanding = IgnitionList();
+		int currentHighest = 0;
 		for (int i = 0; i < grid.size(); i++) {
 			for (int j = 0; j < grid[i].size(); j++) {
-				IgnitionList il = IgnitionList();
-				int ignited = il.ingnitionPathAt(const_cast<GRID&>(grid), i, j);
-				if (ignited > highest) {
-					highest = ignited;
-					standing = il.makeDuplicate();
+				if (!standing.exists(i,j)) {
+					IgnitionList il = standing.makeDuplicate();
+					int ignited = il.ingnitionPathAt(const_cast<GRID&>(grid), i, j);
+					if (ignited > currentHighest && ignited < highest) {
+						currentHighest = ignited;
+						nextStanding = il.makeDuplicate();
+					}
 				}
 			}
 		}
+		highest = currentHighest;
+		total += currentHighest;
+		standing = nextStanding.makeDuplicate();
 	}
 
-	return highest;
+	return total;
 }
 
 int main() {
