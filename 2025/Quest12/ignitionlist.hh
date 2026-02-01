@@ -27,6 +27,13 @@ public:
         return duplicate;   
     }
 
+    void printList() {
+        cout << "(" << x << "," << y << ") ";
+        if (nextItem != nullptr) {
+            nextItem->printList();
+        }
+    }       
+
     void addFromAnotherList(const IgnitionList &other) {
         addItem(other.x, other.y);
         if (other.nextItem != nullptr) {

@@ -32,27 +32,28 @@ vector<vector<int>> readIntGrid(const string &path) {
 }
 
 int findHighestGreedyApproach(const GRID &grid, int rounds) {
-	int total = 0;
-	int highest = grid.size() * grid[0].size(); // minimum ignitable is starting cell only
-	IgnitionList standing = IgnitionList();
-	for (int m = 0; m < rounds; m++) {
-		IgnitionList nextStanding = IgnitionList();
-		int currentHighest = 0;
-		for (int i = 0; i < grid.size(); i++) {
-			for (int j = 0; j < grid[i].size(); j++) {
-				if (!standing.exists(i,j)) {
-					IgnitionList il = standing.makeDuplicate();
-					int ignited = il.ingnitionPathAt(const_cast<GRID&>(grid), i, j);
-					if (ignited > currentHighest && ignited < highest) {
-						currentHighest = ignited;
-						nextStanding = il.makeDuplicate();
+	int total = 0; int highestOverall = grid.size() * grid[0].size();
+	IgnitionList roundList = IgnitionList();
+	for (int r = 0; r < rounds; r++) {
+		IgnitionList bestThisRound = roundList.makeDuplicate();
+		int highestThisRound = 0;
+		for (int x = 0; x < grid.size(); x++) {
+			for (int y = 0; y < grid[0].size(); y++) {
+				if (!roundList.exists(x,y)) {
+					//cout << "Testing ignition at (" << x << "," << y << ") ROUND: " << r << endl;
+					IgnitionList testList = roundList.makeDuplicate();
+					int ignited = testList.ingnitionPathAt(const_cast<GRID&>(grid), x, y);
+					if (ignited > highestThisRound) {
+						highestThisRound = ignited;
+						bestThisRound = testList;
 					}
 				}
 			}
 		}
-		highest = currentHighest;
-		total += currentHighest;
-		standing = nextStanding.makeDuplicate();
+		roundList = bestThisRound.makeDuplicate();
+		//roundList.printList();
+		total = highestThisRound;
+		highestOverall = highestThisRound;
 	}
 
 	return total;
@@ -80,6 +81,13 @@ int main() {
 	// PART THREE : GREEDY APPROACH
 	GRID example3a = readIntGrid("example3a.txt");
 	cout << "Example 3a Highest Greedy Ignited Cells: " << findHighestGreedyApproach(example3a,3) << endl;
+
+	GRID example3b = readIntGrid("example3b.txt");
+	cout << "Example 3b Highest Greedy Ignited Cells: " << findHighestGreedyApproach(example3b,3) << endl;
+
+	GRID part3 = readIntGrid("part3.txt");
+	cout << "GRAB A COFFEE... THIS ONE TAKES A WHILE TO RUN..." << endl;
+	cout << "Part 3 Highest Greedy Ignited Cells: " << findHighestGreedyApproach(part3,3) << endl;
 
 	return 0;
 }
