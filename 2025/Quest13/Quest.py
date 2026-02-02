@@ -62,9 +62,8 @@ def getValueAfterTurns(listOfNumbers, turns):
 def getValueAfterTurnsIncludingLists(listOfNumbers, turns):
 
     def diffFromString(s):
-        #Remove spaces, split on '-', convert to integers
         a, b = s.split('-')
-        return abs(int(a) - int(b)) + 1  # +1 to include both endpoints
+        return abs(int(a) - int(b)) + 1  
     
     def getTotalCount(listOfNumbers):
         total = 0
@@ -73,7 +72,6 @@ def getValueAfterTurnsIncludingLists(listOfNumbers, turns):
         return total
 
     def getNumberInGroup(group, position):
-
         a, b = group.replace(" ", "").split('-')
         return int(b) - position  
     
