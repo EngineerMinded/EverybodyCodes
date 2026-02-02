@@ -3,7 +3,7 @@
     Everybody Codes
     Quest 13
 '''
-# Read numbers from a file
+''' Read number groups from a file '''
 def read_number_groups(filename, isPart3 = False):
     numbers = []
     with open(filename, "r") as f:
@@ -26,6 +26,7 @@ def read_number_groups(filename, isPart3 = False):
                 # ignore invalid tokens silently
     return numbers
 
+''' Parse numbers into a sequence according to the specified rules '''
 def parse_numbers_into_sequence(numbers , isPart3 = False):
     list = []
     if not isPart3:
@@ -50,11 +51,14 @@ def parse_numbers_into_sequence(numbers , isPart3 = False):
         list.append(secondlist[i])
     return list
 
-
+''' Get the value after a certain number of turns 
+    NOTE: THIS WORKS WONDERS FOR PART ONE AND PART TWO. 
+    FOR PART THREE, IT IS TERRIBLY INNEFFICENT.'''
 def getValueAfterTurns(listOfNumbers, turns):
     turns = turns % len(listOfNumbers)
     return listOfNumbers[turns]
 
+''' USES NUMBER RANGES INSTEAD OF LISTS TO IMPROVE EFFICIENCY FOR PART THREE '''
 def getValueAfterTurnsIncludingLists(listOfNumbers, turns):
 
     def diffFromString(s):
@@ -82,6 +86,8 @@ def getValueAfterTurnsIncludingLists(listOfNumbers, turns):
         return -1 # Out of bounds, should not happen
     return getNumberInGroup(listOfNumbers[i], turns)
 
+
+''' MAIN PROGRAM '''
 # PART ONE
 examplea = read_number_groups("example1.txt")
 examplea = parse_numbers_into_sequence(examplea)
@@ -100,6 +106,7 @@ part2 = read_number_groups("part2.txt")
 part2 = parse_numbers_into_sequence(part2)
 print ("Part 2: " + str(getValueAfterTurns(part2, 20252025)))
 
+# RERUNNING PART TWO TO PROVE IT WORKS WITH NEW EFFICENT FUNCTION
 part2 = read_number_groups("part2.txt", True)
 part2 = parse_numbers_into_sequence(part2, True)
 print ("Part 2 with new function: " + str(getValueAfterTurnsIncludingLists(part2, 20252025)))
@@ -108,4 +115,3 @@ print ("Part 2 with new function: " + str(getValueAfterTurnsIncludingLists(part2
 part3 = read_number_groups("part3.txt", True)
 part3 = parse_numbers_into_sequence(part3, True)
 print ("Part 3: " + str(getValueAfterTurnsIncludingLists(part3, 202520252025)))
-
