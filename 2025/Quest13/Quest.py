@@ -58,6 +58,7 @@ def getValueAfterTurnsIncludingLists(listOfNumbers, turns):
                 return listOfNumbers[address][turns - 1]
             else :
                 turns = turns - len(listOfNumbers[address])
+
         else :
             turns = turns - 1
 
@@ -78,10 +79,10 @@ exampleb = parse_numbers_into_sequence(exampleb)
 print ("Example 2: " + str(getValueAfterTurns(exampleb, 20252025)))
 
 part2 = read_number_groups("part2.txt")
-part2 = parse_numbers_into_sequence(part2)
+part2 = parse_numbers_into_sequence(part2,True)
 print ("Part 2: " + str(getValueAfterTurnsIncludingLists(part2, 20252025)))
 
-part3 = read_number_groups("part3.txt")
-part3 = parse_numbers_into_sequence(part3, True)
+#part3 = read_number_groups("part3.txt")
+#part3 = parse_numbers_into_sequence(part3, True)
 #print ("Part 3: " + str(getValueAfterTurns(part3, 202520252025)))
 
