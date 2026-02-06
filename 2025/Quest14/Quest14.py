@@ -79,19 +79,68 @@ def createPart3Grid(old, sizeOfOuterGrid):
     
         for v in range(sizeOfOuterGrid):
             newLine.append(".")
-
-            '''
-            if u >= gridStartX and u < gridStartX + centerGridX:
-                if v >= gridStartY and v < gridStartY + centerGridY:
-                    newLine.append(old[u - gridStartX][v - gridStartY])
-                else:
-                    newLine.append(".")
-            else:
-                newLine.append(".")
-            '''
         new.append(newLine) 
     return new
 
+def gridHasPatternAtCenter(grid, pattern, centerX, centerY):
+    patternSizeX = len(pattern)
+    patternSizeY = len(pattern[0])
+
+    startX = centerX - patternSizeX // 2
+    startY = centerY - patternSizeY // 2
+
+    for i in range(patternSizeX):
+        for j in range(patternSizeY):
+            if grid[startX + i][startY + j] != pattern[i][j]:
+                return False
+    return True
+
+def find_repetitive_patterns(diffs):
+    n = 0
+    length = len(diffs)
+    for i in range(1, length // 2 + 1):
+        is_pattern = True
+        for j in range(length - i):
+            if diffs[j] != diffs[j + i]:
+                is_pattern = False
+                break
+        if is_pattern:
+            n = i
+            break
+    
+    return (n, diffs)
+
+
+def partThree(grid, pattern, iterations):
+    firstOccurence = 0
+    patternToFind = []
+    numberPlaces = []
+    for m in range(iterations):
+        grid = partOneConversion(grid)
+        if gridHasPatternAtCenter(grid, pattern, 17, 17):
+            if firstOccurence == 0:
+                firstOccurence = m + 1
+            patternToFind.append(countOccupied(grid))
+            numberPlaces.append(m)    
+            (u,v) = find_repetitive_patterns(patternToFind)
+            if u > 0:
+                print("Pattern found at iteration:", m + 1)
+                print("Pattern length:", u)
+                print("Pattern sum:", v)
+                answer = 0
+                count = firstOccurence
+                while True:
+                    for x in range(u):
+                        answer += v[x]
+                        count += patternToFind[x + 1] - patternToFind[x]
+                        print (count)
+                        if count >= iterations:
+                            print("Part Three:", answer)
+                            return
+
+        #determine if list has repeating pattern
+ 
+            
 
 # Part One
 example1 = read_file_to_2d_char_array("example1.txt")
@@ -105,12 +154,6 @@ part2 = read_file_to_2d_char_array("part2.txt")
 print("Part Two:", partOne(part2, 2025))  # Adjust iterations as needed
 
 # Part Three
-part3 = read_file_to_2d_char_array("example3.txt")
-part3 = createPart3Grid(part3, 34)
-printGrid(part3)
-for n in range(1000000000 ):
-    part3 = partOneConversion(part3)
-    if n == 1000000:
-        print(n)
-    #printGrid(part3)
-
+example3Find = read_file_to_2d_char_array("example3.txt")
+example3 = createPart3Grid(example3Find, 34)
+partThree(example3, example3Find, 1000000000)  # Adjust iterations as needed
