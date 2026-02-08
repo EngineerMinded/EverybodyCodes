@@ -2,9 +2,7 @@
     Wayne Mack
     Everybody Codes
     Quest 14
-
 '''
-
 # --- Read File Contents and make 2D Character Array ---
 def read_file_to_2d_char_array(filename):
     grid = []
