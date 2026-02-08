@@ -95,7 +95,7 @@ def gridHasPatternAtCenter(grid, pattern, centerX, centerY):
                 return False
     return True
 
-def find_repetitive_patterns(diffs):
+def find_repetitive_patterns(diffs, current_iteration):
     n = 0
     length = len(diffs)
     for i in range(1, length // 2 + 1):
@@ -108,7 +108,7 @@ def find_repetitive_patterns(diffs):
             n = i
             break
     
-    return (n, diffs)
+    return (n, diffs,current_iteration)
 
 
 def partThree(grid, pattern, iterations):
@@ -121,30 +121,26 @@ def partThree(grid, pattern, iterations):
             if firstOccurence == 0:
                 firstOccurence = m + 1
             patternToFind.append(countOccupied(grid))
-            numberPlaces.append(m)    
-            (u,v) = find_repetitive_patterns(patternToFind)
+            numberPlaces.append((m + 1))    
+            (u,v,w) = find_repetitive_patterns(patternToFind,numberPlaces)
             if u > 0:
-                print("Pattern found at iteration:", m + 1)
-                print("Pattern length:", u)
-                print("Pattern sum:", v)
-                answer = 0
+                print ("Calculating Answer - Please Wait...")
+                jumps = []
+                for i in range(u):
+                    jumps.append(w[i + 1] - w[i])
                 count = firstOccurence
-                while True:
-                    for x in range(u):
-                        answer += v[x]
-                        count += patternToFind[x + 1] - patternToFind[x]
-                        print (count)
+                answer = 0
+                while count + u < iterations:
+                    for t in range(u):
+                        count += jumps[t]
+                        answer += v[t]
                         if count >= iterations:
-                            print("Part Three:", answer)
-                            return
-
-        #determine if list has repeating pattern
- 
-            
-
+                            break
+                        #print("Jumping to iteration:", count, "with answer:", answer)
+                return answer
+       
 # Part One
 example1 = read_file_to_2d_char_array("example1.txt")
-printGrid(example1)
 print("Part One Example:", partOne(example1, 10))  # Adjust iterations as needed
 part1 = read_file_to_2d_char_array("part1.txt")
 print("Part One:", partOne(part1, 10))  # Adjust iterations as needed
@@ -156,4 +152,8 @@ print("Part Two:", partOne(part2, 2025))  # Adjust iterations as needed
 # Part Three
 example3Find = read_file_to_2d_char_array("example3.txt")
 example3 = createPart3Grid(example3Find, 34)
-partThree(example3, example3Find, 1000000000)  # Adjust iterations as needed
+print ("Example 3: " ,partThree(example3, example3Find, 1000000000))  # Adjust iterations as needed
+
+part3 = read_file_to_2d_char_array("part3.txt")
+part3Grid = createPart3Grid(part3, 34)
+print ("Part 3: " , partThree(part3Grid, part3, 1000000000))
