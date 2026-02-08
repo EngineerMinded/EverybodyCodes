@@ -5,6 +5,7 @@
 
 '''
 
+# --- Read File Contents and make 2D Character Array ---
 def read_file_to_2d_char_array(filename):
     grid = []
     with open(filename, "r", encoding="utf-8") as f:
@@ -14,9 +15,10 @@ def read_file_to_2d_char_array(filename):
             grid.append(row)
     return grid
 
-def partOneConversion(old):
+# --- Generate next generations of Grid Per the Rules ---   
+def generationConversion(old):
     new = []
-
+    # -- Convert a single character based on diagonal neighbors ---
     def convertCharacter(old, x, y):
         # check four diagonal neighbors
         count = 0
@@ -44,6 +46,7 @@ def partOneConversion(old):
         new.append(newLine)
     return new
 
+# --- Count Occupied spaces in Grid ---
 def countOccupied(grid):
     count = 0
     for i in range(len(grid)):
@@ -52,27 +55,26 @@ def countOccupied(grid):
                 count += 1
     return count
 
+# --- Print Grid to Console (for debugging) ---
 def printGrid(grid):
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             print(grid[i][j], end="")
         print()
 
+# --- Procedure for Part One and Two ---
 def partOne(grid, numberOfIterations):
     returnThis = 0
 
     for _ in range(numberOfIterations):
-        grid = partOneConversion(grid)
+        grid = generationConversion(grid)
         returnThis += countOccupied(grid)
     return returnThis
 
-def createPart3Grid(old, sizeOfOuterGrid):
+# --- Create a larger grid for Part Three: A blank template ---
+def createPart3Grid( sizeOfOuterGrid):
     new = []
-    centerGridX = len(old)
-    centerGridY = len(old[0])
-
-    gridStartX = (sizeOfOuterGrid - centerGridX) // 2
-    gridStartY = (sizeOfOuterGrid - centerGridY) // 2
+  
 
     for u in range(sizeOfOuterGrid):
         newLine = []
@@ -82,6 +84,7 @@ def createPart3Grid(old, sizeOfOuterGrid):
         new.append(newLine) 
     return new
 
+# --- Check if pattern exists at center of grid for Part 3's procedure ---
 def gridHasPatternAtCenter(grid, pattern, centerX, centerY):
     patternSizeX = len(pattern)
     patternSizeY = len(pattern[0])
@@ -95,6 +98,7 @@ def gridHasPatternAtCenter(grid, pattern, centerX, centerY):
                 return False
     return True
 
+# --- Find repetitive patterns in Part Three ---
 def find_repetitive_patterns(diffs, current_iteration):
     n = 0
     length = len(diffs)
@@ -110,13 +114,13 @@ def find_repetitive_patterns(diffs, current_iteration):
     
     return (n, diffs,current_iteration)
 
-
+# --- Procedure for Part Three ---
 def partThree(grid, pattern, iterations):
     firstOccurence = 0
     patternToFind = []
     numberPlaces = []
     for m in range(iterations):
-        grid = partOneConversion(grid)
+        grid = generationConversion(grid)
         if gridHasPatternAtCenter(grid, pattern, 17, 17):
             if firstOccurence == 0:
                 firstOccurence = m + 1
@@ -124,7 +128,6 @@ def partThree(grid, pattern, iterations):
             numberPlaces.append((m + 1))    
             (u,v,w) = find_repetitive_patterns(patternToFind,numberPlaces)
             if u > 0:
-                print ("Calculating Answer - Please Wait...")
                 jumps = []
                 for i in range(u):
                     jumps.append(w[i + 1] - w[i])
@@ -136,9 +139,9 @@ def partThree(grid, pattern, iterations):
                         answer += v[t]
                         if count >= iterations:
                             break
-                        #print("Jumping to iteration:", count, "with answer:", answer)
                 return answer
-       
+
+'''MAIN PROGRAM EXECUTION'''    
 # Part One
 example1 = read_file_to_2d_char_array("example1.txt")
 print("Part One Example:", partOne(example1, 10))  # Adjust iterations as needed
@@ -151,9 +154,9 @@ print("Part Two:", partOne(part2, 2025))  # Adjust iterations as needed
 
 # Part Three
 example3Find = read_file_to_2d_char_array("example3.txt")
-example3 = createPart3Grid(example3Find, 34)
+example3 = createPart3Grid( 34)
 print ("Example 3: " ,partThree(example3, example3Find, 1000000000))  # Adjust iterations as needed
 
 part3 = read_file_to_2d_char_array("part3.txt")
-part3Grid = createPart3Grid(part3, 34)
+part3Grid = createPart3Grid( 34)
 print ("Part 3: " , partThree(part3Grid, part3, 1000000000))
