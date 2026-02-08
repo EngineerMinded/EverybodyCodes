@@ -73,7 +73,6 @@ def partOne(grid, numberOfIterations):
 def createPart3Grid( sizeOfOuterGrid):
     new = []
   
-
     for u in range(sizeOfOuterGrid):
         newLine = []
     
@@ -142,18 +141,18 @@ def partThree(grid, pattern, iterations):
 '''MAIN PROGRAM EXECUTION'''    
 # Part One
 example1 = read_file_to_2d_char_array("example1.txt")
-print("Part One Example:", partOne(example1, 10))  # Adjust iterations as needed
+print("Part One Example:", partOne(example1, 10)) 
 part1 = read_file_to_2d_char_array("part1.txt")
-print("Part One:", partOne(part1, 10))  # Adjust iterations as needed
+print("Part One:", partOne(part1, 10))  
 
 # Part Two
 part2 = read_file_to_2d_char_array("part2.txt")
-print("Part Two:", partOne(part2, 2025))  # Adjust iterations as needed
+print("Part Two:", partOne(part2, 2025))  
 
 # Part Three
 example3Find = read_file_to_2d_char_array("example3.txt")
 example3 = createPart3Grid( 34)
-print ("Example 3: " ,partThree(example3, example3Find, 1000000000))  # Adjust iterations as needed
+print ("Example 3: " ,partThree(example3, example3Find, 1000000000)) 
 
 part3 = read_file_to_2d_char_array("part3.txt")
 part3Grid = createPart3Grid( 34)
