@@ -68,6 +68,8 @@ class Map {
            // establish the new offsets and lengths for the grid based on the wall coordinates
            this.xOffset = -xLeft;
            this.yOffset = -yTop;
+           yBottom += this.yOffset;
+           xRight += this.xOffset;
            this.xLength = xRight - xLeft + 1;
            this.yLength = yBottom - yTop + 1;
            console.log(`xOffset: ${this.xOffset}, yOffset: ${this.yOffset}, xLength: ${this.xLength}, yLength: ${this.yLength}`);
@@ -86,43 +88,44 @@ class Map {
                     if (this.wall.some(w => w[0] == j && w[1] == i)) {
                         this.newGridLine.push(-1);
                     } else {
-                        this.newGridLine.push(0);
+                        this.newGridLine.push(this.xLength * this.yLength); // a large number representing unvisited
                     }
                 }
                 this.grid.push(this.newGridLine);
             }
+            this.grid[this.startY][this.startX] = (this.xLength*this.xLength); 
+            this.grid[this.endy][this.endx] = (this.xLength*this.xLength); 
         }
         renderWallPath.call(this, parseData);
     }
 
-    setPacesFromStart(_x = this.startX, _y = this.startY, pace = 0) {
-        this.grid[_x][_y] = pace;
+    setPacesFromStart(xx = 0, yy = 0, pace = 0) {
+        console.log(`Setting pace at (${xx}, ${yy}) to ${pace}`);
+        this.grid[xx][yy] = pace;
+        
         // populate the grid with paces from the start point
-        if (this.grid[_x+1] && this.grid[_x+1][_y] > this.grid[_x][_y] || this.grid[_x+1][_y] == 0) {
-            this.setPacesFromStart(_x+1,_y,pace+1);
+        if (xx < this.xLength  && this.grid[xx+1][yy] >= pace + 1) {
+            this.setPacesFromStart(xx+1,yy,pace+1);
         }
-        if (this.grid[_x-1] && this.grid[_x-1][_y] > this.grid[_x][_y] || this.grid[_x+1][_y] == 0) {
-            this.setPacesFromStart(_x-1,_y,pace+1);
+        if (xx > 0 && this.grid[xx-1][yy] >= pace + 1) {
+            this.setPacesFromStart(xx-1,yy,pace+1);
         }
-        if (this.grid[_x][_y+1] > this.grid[_x][_y] || this.grid[_x+1][_y] == 0) {
-            this.setPacesFromStart(_x,_y+1,pace+1);
+        if (yy < this.ylength && this.grid[xx][yy+1] >= pace + 1) {
+            this.setPacesFromStart(xx,yy+1,pace+1);
         }
-        if (this.grid[_x][_y-1]> this.grid[_x][_y] || this.grid[_x+1][_y] == 0) {
-            this.setPacesFromStart(_x,_y-1,pace+1);
+        if (yy > 0 && this.grid[xx][yy-1] >= pace + 1) {
+            this.setPacesFromStart(xx,yy-1,pace+1);
         }
-       
-
+        
     }
 
     printMap() {
         for (let i = 0; i < this.grid.length; i++) {
             let line = "";
             for (let j = 0; j < this.grid[i].length; j++) {
-                if (this.grid[i][j] == -1) {
-                    line += "X";
-                } else  {
-                    line += this.grid[i][j].toString();
-                }
+                line += this.grid[i][j].toString().padStart(4, ' ');
+
+                  
             }
                 //line += this.grid[i][j] + " ";
             console.log(line);
@@ -137,5 +140,7 @@ let example1 = new Map("R3,R4,L3,L4,R3,R6,R9");
 console.log(example1.wall);
 console.log(`Start: (${example1.startX}, ${example1.startY})`);
 console.log(`End: (${example1.endx}, ${example1.endy})`);
+
+example1.setPacesFromStart();
 example1.printMap();
-example1.setPacesFromStart(0,0,0);
+console.log(`Paces from start to end: ${example1.grid[example1.endx][example1.endy]}`);
