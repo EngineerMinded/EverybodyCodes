@@ -102,7 +102,7 @@ class Map {
     }
 
     setPacesFromStart(xx = 0, yy = 0, pace = 0) {
-        //console.log(`Setting pace at (${xx}, ${yy}) to ${pace}`);
+        console.log(`Setting pace at (${xx}, ${yy}) to ${pace}`);
         this.grid[xx][yy] = pace;
         
         // populate the grid with paces from the start point
@@ -151,4 +151,7 @@ console.log(`End: (${example1.endx}, ${example1.endy})`);
 example1.setPacesFromStart();
 example1.printMap();
 console.log(`Paces from start to end: ${example1.grid[example1.endy][example1.endx]}`);
-console.log(example1.endx, " " , example1.endy)
+
+let Part1 = new Map("L6,L6,L6,R6,L6,L3,L3,R6,R6,L3,L3,R3,L6,R6,L6,L6,R3,L6,R6,L3,L6,R6,L6,R6,L6,L3,R6,L3,R3,L3,R3,L6,R6,L3,L3,R6,L3,R6,L3,L3,R3,R6,L6,R6,L3,L6,R6,R6,L3,L6,R3,L6,L3,R3,R6,L6,R3,L3,R3,L3");
+Part1.setPacesFromStart();
+console.log(`Paces from start to end: ${Part1.grid[Part1.endy][Part1.endx]}`);
