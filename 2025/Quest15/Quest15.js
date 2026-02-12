@@ -68,6 +68,8 @@ class Map {
            // establish the new offsets and lengths for the grid based on the wall coordinates
            this.xOffset = -xLeft;
            this.yOffset = -yTop;
+           this.endx +=this.xOffset;
+           this.endy +=this.yOffset;
            yBottom += this.yOffset;
            xRight += this.xOffset;
            this.xLength = xRight - xLeft + 1;
@@ -100,21 +102,26 @@ class Map {
     }
 
     setPacesFromStart(xx = 0, yy = 0, pace = 0) {
-        console.log(`Setting pace at (${xx}, ${yy}) to ${pace}`);
+        //console.log(`Setting pace at (${xx}, ${yy}) to ${pace}`);
         this.grid[xx][yy] = pace;
         
         // populate the grid with paces from the start point
-        if (xx < this.xLength  && this.grid[xx+1][yy] >= pace + 1) {
-            this.setPacesFromStart(xx+1,yy,pace+1);
+        if (xx > 0) {
+            //console.log(this.grid[xx-1][yy], " ", pace);
+            if (this.grid[xx-1][yy] >= pace+1) {
+                this.setPacesFromStart(xx-1,yy,pace+1);
+            }
         }
-        if (xx > 0 && this.grid[xx-1][yy] >= pace + 1) {
-            this.setPacesFromStart(xx-1,yy,pace+1);
+        if (yy < this.yLength) {
+            if( this.grid[xx][yy+1] >= pace+1) {
+                this.setPacesFromStart(xx,yy+1,pace+1);
+            }
         }
-        if (yy < this.ylength && this.grid[xx][yy+1] >= pace + 1) {
-            this.setPacesFromStart(xx,yy+1,pace+1);
-        }
-        if (yy > 0 && this.grid[xx][yy-1] >= pace + 1) {
+        if (yy > 0 && this.grid[xx][yy-1] >= pace+1) {
             this.setPacesFromStart(xx,yy-1,pace+1);
+        }
+        if (xx < this.xLength  && this.grid[xx+1][yy] >= pace+1) {
+            this.setPacesFromStart(xx+1,yy,pace+1);
         }
         
     }
@@ -143,4 +150,5 @@ console.log(`End: (${example1.endx}, ${example1.endy})`);
 
 example1.setPacesFromStart();
 example1.printMap();
-console.log(`Paces from start to end: ${example1.grid[example1.endx][example1.endy]}`);
+console.log(`Paces from start to end: ${example1.grid[example1.endy][example1.endx]}`);
+console.log(example1.endx, " " , example1.endy)
