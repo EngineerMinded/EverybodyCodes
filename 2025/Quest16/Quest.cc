@@ -64,7 +64,7 @@ bool numberCanBeFactoredOut(NUM_LIST numberList, int numberToTest) {
 
 int partTwo(NUM_LIST nums) {
     NUM_LIST points;
-    for (int i = 1; i < nums.size(); i++)
+    for (int i = 1; i < nums.size() / 2; i++)
     {
         if (numberCanBeFactoredOut(nums, i)) {
            
