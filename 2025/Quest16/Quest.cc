@@ -9,6 +9,9 @@
 #include <sstream>
 #define NUM_LIST std::vector<int>
 
+/// PART 1 DONE 
+// PART 2 PRACTICAL IS WRONG`
+
 NUM_LIST readCommaSeparated(const std::string& filename) {
     std::vector<int> nums;
     std::ifstream file(filename);
