@@ -15,9 +15,7 @@
 NUM_LIST readCommaSeparated(const std::string& filename) {
     std::vector<int> nums;
     std::ifstream file(filename);
-
     if (!file.is_open()) return nums;
-
     std::string line;
     while (std::getline(file, line)) {
         std::stringstream ss(line);
@@ -29,26 +27,23 @@ NUM_LIST readCommaSeparated(const std::string& filename) {
             }
         }
     }
-
     return nums;
 }
 
-int partOne(NUM_LIST nums, int numberOfPointsInList) {
-    NUM_LIST points;
+NUM_LIST generateWall(NUM_LIST nums, int numberOfPointsInList) {
+    NUM_LIST newList;
     for (int i = 0; i < numberOfPointsInList; i++)
     {
-        points.push_back(0);
+        newList.push_back(0);
     }
     for (int nextNum : nums) {
         for (int i = 0; i < numberOfPointsInList; i++) {
             if ((i + 1) % nextNum == 0) {
-                points[i] += 1;
+                newList[i] += 1;
             }
         }
     }
-    int returnThis = 0;
-    for (int n : points) {returnThis += n;}
-    return returnThis;
+    return newList;
 }
 
 bool numberCanBeFactoredOut(NUM_LIST numberList, int numberToTest) {
@@ -62,24 +57,41 @@ bool numberCanBeFactoredOut(NUM_LIST numberList, int numberToTest) {
     return true;
 }
 
-int partTwo(NUM_LIST nums) {
+NUM_LIST generateSpell(NUM_LIST nums, int numberOfPointsInList) {
     NUM_LIST points;
-    for (int i = 1; i < nums.size() / 2; i++)
+    for (int i = 1; i < nums.size(); i++)
     {
         if (numberCanBeFactoredOut(nums, i)) {
            
-            for (int j = 1; j < nums.size(); j ++) {
+            for (int j = 1; j < nums.size()  + 1; j ++) {
                 if (j % i == 0) {
                     nums[j - 1] -= 1;
                 }
             }
-            std::cout << "Number " << i << " can be factored out. New list: ";
-            for (int g : nums) {
-                std::cout << g << " ";
-            }
+            std::cout << "Number " << i << " can be factored out.";
+      
             std::cout << std::endl;
             points.push_back(i);
         }
+    }
+    return points;
+}
+
+int partOne(NUM_LIST nums, int numberOfPointsInList) {
+    NUM_LIST points = generateWall(nums, numberOfPointsInList);
+    // INSTRUCTIONS MOVE TO ABOVE FUCTION FOR ERROR CHECKING
+    int returnThis = 0;
+    for (int n : points) {returnThis += n;}
+    return returnThis;
+}
+
+int partTwo(NUM_LIST nums) {
+    NUM_LIST points = generateSpell(nums, nums.size());
+
+    NUM_LIST errorCheck = generateWall(points, nums.size());
+    for (int n = 0; n < errorCheck.size(); n++) {
+        std::cout << errorCheck[n] << "-" << nums[n] << " "; 
+        
     }
 
     int returnThis = 1;
