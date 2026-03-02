@@ -90,7 +90,7 @@ long long  partTwo(NUM_LIST nums) {
 
 long long gettotalNumberOfBlocksInWall(NUM_LIST nums) {
     long long total = 0;
-    for (int n : nums) {total += n;}
+    for (long long n = 0; n < nums.size(); n++) {total += nums[n];}
     return total;
 }
 
@@ -108,9 +108,9 @@ long long getRemainingWall(NUM_LIST nums, long long totalBlocks) {
 
 long long part3(NUM_LIST nums, unsigned long long totalBlocks) {
     long long totalBlocksInWall = gettotalNumberOfBlocksInWall(nums);
-    std::cout << "Total blocks in wall: " << totalBlocksInWall << std::endl;
+    // SOMETHING IS WRONG WITH THIS CALCULATION, IT THROWS OFF THE TOTAL
     long long totalWallSize = (totalBlocks / totalBlocksInWall) * nums.size();
-    std::cout << "Total wall size: " << totalWallSize << std::endl;
+    std::cout << " " << (totalBlocks / totalBlocksInWall) << " " << nums.size() << std::endl;
     long long remainingBlocks = totalBlocks % totalBlocksInWall;
     return totalWallSize + getRemainingWall(nums, remainingBlocks);
 }
