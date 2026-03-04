@@ -11,7 +11,7 @@
 
 /// PART 1 DONE 
 /// PART 2 DONE
-/// PART 3 TALLYING NUMBERS INCORRECTLY
+/// PART 3 DONE
 
 NUM_LIST readCommaSeparated(const std::string& filename) {
     std::vector<int> nums;
