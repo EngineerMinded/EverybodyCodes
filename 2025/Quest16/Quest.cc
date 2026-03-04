@@ -106,13 +106,24 @@ long long getRemainingWall(NUM_LIST nums, long long totalBlocks) {
     return totalWallSize;
 }
 
-long long part3(NUM_LIST nums, unsigned long long totalBlocks) {
-    long long totalBlocksInWall = gettotalNumberOfBlocksInWall(nums);
-    // SOMETHING IS WRONG WITH THIS CALCULATION, IT THROWS OFF THE TOTAL
-    long long totalWallSize = (totalBlocks / totalBlocksInWall) * nums.size();
-    std::cout << " " << (totalBlocks / totalBlocksInWall) << " " << nums.size() << std::endl;
-    long long remainingBlocks = totalBlocks % totalBlocksInWall;
-    return totalWallSize + getRemainingWall(nums, remainingBlocks);
+long long part3BST(NUM_LIST nums, unsigned long long totalBlocks) {
+    long long low = 0;
+    long long high = totalBlocks;
+    NUM_LIST spell = generateSpell(nums, nums.size());
+ 
+    while (low < high) {
+        long long mid = (high +low) / 2;
+        long long blocksUsed = 0;
+        for (int n : spell) {
+            blocksUsed += mid / n;
+        }
+        if (blocksUsed < totalBlocks) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return high;
 }
 
 int main() {
@@ -128,12 +139,12 @@ int main() {
     std::cout << "Part 2: " << partTwo(part2) << std::endl; 
     // PART 3
     NUM_LIST example3 = readCommaSeparated("example2.txt");
-    // ALL SAMPLE CASES
-    std::cout << "Example 3a: " << part3(example3, 1) << std::endl;
-    std::cout << "Example 3b: " << part3(example3, 10) << std::endl;
-    std::cout << "Example 3c: " << part3(example3, 100) << std::endl;
-    std::cout << "Example 3d: " << part3(example3, 1000) << std::endl;
-    std::cout << "Example 3e: " << part3(example3, 10000) << std::endl;
+    /* ALL SAMPLE CASES */
+    std::cout << "Example 3a: " << part3BST(example3, 1) << std::endl;
+    std::cout << "Example 3b: " << part3BST(example3, 10) << std::endl;
+
+    NUM_LIST Part3 = readCommaSeparated("part3.txt");
+    std::cout << "Part 3: " << part3BST(Part3, 202520252025000) << std::endl;
 
     return 0;
 }
