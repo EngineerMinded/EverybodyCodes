@@ -1,3 +1,10 @@
+// Wayne Mack
+// Everybody Codes
+// Story 3 : Quest 1 - PART THREE
+
+// This program is modified from the DragonDuckGenerator.cc
+// This program solves Part Three
+
 #include <iostream>
 #include <fstream>
 #include <vector>

@@ -1,3 +1,11 @@
+// Wayne Mack
+// Everybody Codes
+// Story 3 : Quest 1
+
+// This file is the template to read files and create DragonDuck objects.
+// It is modified for uses in Parts 1  - 3. This program merely displays the
+// information for errorchecking.
+
 #include <iostream>
 #include <fstream>
 #include <vector>

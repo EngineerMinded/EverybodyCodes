@@ -1,3 +1,11 @@
+// Wayne Mack
+// Everybody Codes
+// Story 3 : Quest 1 - DRAGONDUCK OBJECT CLASS
+
+// This program creates the DragonDuck class and processes 
+// the input line to create the object with the appropriate values. 
+// It is used in Parts 1 - 3.
+
 #include <iostream>
 using namespace std;
 #include <string>
