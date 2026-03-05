@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Red Binary: " << duck.redBinary << " -> Red Value: " << duck.redValue << "\n";
         std::cout << "Green Binary: " << duck.greenBinary << " -> Green Value: " << duck.greenValue << "\n";
         std::cout << "Blue Binary: " << duck.blueBinary << " -> Blue Value: " << duck.blueValue << "\n";
+        std::cout << "Shine Binary: " << duck.shineBinary << " -> Shine Value: " << duck.shineValue << "\n";
         std::cout << "-----------------------------\n";
     }
     
