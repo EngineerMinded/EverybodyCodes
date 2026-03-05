@@ -11,7 +11,6 @@ using namespace std;
 #include <string>
 #include <sstream>
 
-
 #ifndef DRAGONDUCK_HH
 #define DRAGONDUCK_HH
 
@@ -20,7 +19,6 @@ public:
     int numericValue;
     string redBinary, greenBinary, blueBinary, shineBinary;
     int redValue, greenValue, blueValue, shineValue;
-
 
     int parseBinaryValues(string binaryString) {
         string reversedString(binaryString.rbegin(), binaryString.rend());
@@ -35,7 +33,6 @@ public:
         }
         return value;
     }
-
 
     DragonDuck(string line) { 
         size_t colonPos = line.find(':');
@@ -56,7 +53,6 @@ public:
         } else {
             shineValue = 0;
         }
-
     }
 };  
 
