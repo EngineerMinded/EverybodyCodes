@@ -10,7 +10,7 @@ function read2DCharArray(path) {
 }
 
 class Grid {
-   grid = []
+    trail = [];
    yourPosition = [];
    destinationPosition = [];
    direction = 'north';
@@ -20,8 +20,8 @@ class Grid {
     }
     constructor(filename) {
         this.direction = 'north';
-        this.grid = read2DCharArray(filename);
-        this.grid.forEach((row, rowIndex) => {
+        let grid = read2DCharArray(filename);
+        grid.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 console.log(cell);
                 if (cell === '@') {
@@ -45,56 +45,61 @@ class Grid {
         }   
     }
 
-    printGrid() {
-        this.grid.forEach(row => {
-            console.log(row.join(''));
+    pointExists(x,y) {
+        console.log(this.trail);
+        this.trail.forEach(point => {
+            if (point[0] === x && point[1] === y) {
+                return true;
+            }
         });
+
+        return x === this.destinationPosition[0] && y === this.destinationPosition[1];
     }
 
-    partOneMove() {
+
+    destinationSurrounded() {
+        return (this.pointExists(this.destinationPosition[0] - 1, this.destinationPosition[1]) &&
+                this.pointExists(this.destinationPosition[0] + 1, this.destinationPosition[1]) &&
+                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] - 1) &&
+                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] + 1));
+    }
+
+
+    partTwoMove() {
         let steps = 0;
-        while ((this.yourPosition[0] !== this.destinationPosition[0] || this.yourPosition[1] !== this.destinationPosition[1])) {
+        while (steps < 50 && !this.destinationSurrounded()) {
             console.log(this.yourPosition, " ", this.destinationPosition," ",steps);
             if (this.direction === 'north') {
-                if (this.yourPosition[0] > 0 &&
-                    this.grid[this.yourPosition[0] - 1][this.yourPosition[1]] !== '+' &&
-                    this.grid[this.yourPosition[0] - 1][this.yourPosition[1]] !== '@') {
+                if (this.pointExists(this.yourPosition[0] - 1, this.yourPosition[1]) == false) {
                     this.yourPosition[0] -= 1;
-                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
+                    this.trail.push(this.yourPosition);
                     steps+=1;
                 }
             } else if (this.direction === 'east') {
-                if (this.yourPosition[1] < this.grid[0].length - 1 &&
-                    this.grid[this.yourPosition[0]][this.yourPosition[1] + 1] !== '+' &&
-                    this.grid[this.yourPosition[0]][this.yourPosition[1] + 1] !== '@') {
+                if (this.pointExists(this.yourPosition[0], this.yourPosition[1] + 1) == false) {
                     this.yourPosition[1] += 1;
-                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
+                    this.trail.push(this.yourPosition);
                     steps+=1;
                 } 
             } else if (this.direction === 'south') {
-                if (this.yourPosition[0] < this.grid.length - 1 &&
-                    this.grid[this.yourPosition[0] + 1][this.yourPosition[1]] !== '+' &&
-                    this.grid[this.yourPosition[0] + 1][this.yourPosition[1]] !== '@') {
+                if (this.pointExists(this.yourPosition[0] + 1, this.yourPosition[1]) == false) {
                     this.yourPosition[0] += 1;
-                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
+                    this.trail.push(this.yourPosition);
                     steps+=1;
                 }
             } else if (this.direction === 'west') {
-                if (this.yourPosition[1] > 0 &&
-                    this.grid[this.yourPosition[0]][this.yourPosition[1] - 1] !== '+' &&
-                    this.grid[this.yourPosition[0]][this.yourPosition[1] - 1] !== '@') {
+                if (this.pointExists(this.yourPosition[0], this.yourPosition[1] - 1) == false) {
                     this.yourPosition[1] -= 1;
-                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
+                    this.trail.push(this.yourPosition);
                     steps+=1;
                 }
             }
             this.changeDirection();
         }
-        this.printGrid();
         return steps;
     }
 };
 
 // Example:
-const example1 = new Grid('part1.txt');
-console.log(example1.partOneMove()); // 10  
+const example1 = new Grid('example2.txt');
+console.log(example1.partTwoMove()); // 10  
