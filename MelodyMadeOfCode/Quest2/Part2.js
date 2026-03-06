@@ -48,11 +48,12 @@ class Grid {
     pointExists(x,y) {
         console.log(this.trail);
         this.trail.forEach(point => {
+            console.log("Exists: ",x, " ", y, " ", point);
             if (point[0] === x && point[1] === y) {
                 return true;
             }
         });
-
+        
         return x === this.destinationPosition[0] && y === this.destinationPosition[1];
     }
 
