@@ -10,7 +10,7 @@ function read2DCharArray(path) {
 }
 
 class Grid {
-    trail = [];
+   grid = []
    yourPosition = [];
    destinationPosition = [];
    direction = 'north';
@@ -20,8 +20,8 @@ class Grid {
     }
     constructor(filename) {
         this.direction = 'north';
-        let grid = read2DCharArray(filename);
-        grid.forEach((row, rowIndex) => {
+        this.grid = read2DCharArray(filename);
+        this.grid.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 console.log(cell);
                 if (cell === '@') {
@@ -44,63 +44,88 @@ class Grid {
             this.direction = 'north';   
         }   
     }
-
-    pointExists(x,y) {
-        console.log(this.trail);
-        this.trail.forEach(point => {
-            console.log("Exists: ",x, " ", y, " ", point);
-            if (point[0] === x && point[1] === y) {
-                return true;
+    expandGrid() {
+        const newGrid = [];
+        for (let i = 0; i < this.grid.length + 2; i++) {
+            const newRow = [];
+            for (let j = 0; j < this.grid[0].length + 2; j++) {
+                if (i === 0 || i === this.grid.length + 1 || j === 0 || j === this.grid[0].length + 1) {
+                    newRow.push('.');
+                } else {
+                    newRow.push(this.grid[i - 1][j - 1]);
+                }
             }
+            newGrid.push(newRow);
+        }   
+        this.grid = newGrid;
+        this.yourPosition[0] += 1;
+        this.yourPosition[1] += 1;
+        this.destinationPosition[0] += 1;
+        this.destinationPosition[1] += 1;   
+    }
+
+
+
+    printGrid() {
+        this.grid.forEach(row => {
+            console.log(row.join(''));
         });
-        
-        return x === this.destinationPosition[0] && y === this.destinationPosition[1];
     }
 
-
-    destinationSurrounded() {
-        return (this.pointExists(this.destinationPosition[0] - 1, this.destinationPosition[1]) &&
-                this.pointExists(this.destinationPosition[0] + 1, this.destinationPosition[1]) &&
-                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] - 1) &&
-                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] + 1));
+    destinationIsSurrounded() {
+        return (this.grid[this.destinationPosition[0] - 1][this.destinationPosition[1]] !== '.' &&
+                this.grid[this.destinationPosition[0] + 1][this.destinationPosition[1]] !== '.' &&
+                this.grid[this.destinationPosition[0]][this.destinationPosition[1] - 1] !== '.' &&
+                this.grid[this.destinationPosition[0]][this.destinationPosition[1] + 1] !== '.');
     }
 
-
-    partTwoMove() {
+    partOneMove() {
         let steps = 0;
-        while (steps < 50 && !this.destinationSurrounded()) {
+        while ( steps < 25 && !this.destinationIsSurrounded()) {
             console.log(this.yourPosition, " ", this.destinationPosition," ",steps);
+            this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
             if (this.direction === 'north') {
-                if (this.pointExists(this.yourPosition[0] - 1, this.yourPosition[1]) == false) {
+                if (this.yourPosition[0] > 0 &&
+                    this.grid[this.yourPosition[0] - 1][this.yourPosition[1]] === '.') {
                     this.yourPosition[0] -= 1;
-                    this.trail.push(this.yourPosition);
+                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
                 }
             } else if (this.direction === 'east') {
-                if (this.pointExists(this.yourPosition[0], this.yourPosition[1] + 1) == false) {
+                if (this.yourPosition[1] < this.grid[0].length - 1 &&
+                    this.grid[this.yourPosition[0]][this.yourPosition[1] + 1] === '.' ) {
                     this.yourPosition[1] += 1;
-                    this.trail.push(this.yourPosition);
+                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
                 } 
             } else if (this.direction === 'south') {
-                if (this.pointExists(this.yourPosition[0] + 1, this.yourPosition[1]) == false) {
+                if (this.yourPosition[0] < this.grid.length - 1 &&
+                    this.grid[this.yourPosition[0] + 1][this.yourPosition[1]] === '.' ) {
                     this.yourPosition[0] += 1;
-                    this.trail.push(this.yourPosition);
+                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
                 }
             } else if (this.direction === 'west') {
-                if (this.pointExists(this.yourPosition[0], this.yourPosition[1] - 1) == false) {
+                if (this.yourPosition[1] > 0 &&
+                    this.grid[this.yourPosition[0]][this.yourPosition[1] - 1] === '.') {
                     this.yourPosition[1] -= 1;
-                    this.trail.push(this.yourPosition);
+                    this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
                 }
             }
+            // expand the grid if we are about to go out of bounds
+            if (this.yourPosition[0] === 0 || this.yourPosition[0] === this.grid.length - 1 ||
+                this.yourPosition[1] === 0 || this.yourPosition[1] === this.grid[0].length - 1) {
+                this.expandGrid();
+            }
             this.changeDirection();
+            this.printGrid();
         }
+        this.printGrid();
         return steps;
     }
 };
 
 // Example:
 const example1 = new Grid('example2.txt');
-console.log(example1.partTwoMove()); // 10  
+console.log(example1.partOneMove()); // 10  

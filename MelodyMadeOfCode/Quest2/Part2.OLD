@@ -1,0 +1,105 @@
+// Wayne Mack
+// Everybody Codes
+// Quest 2
+
+const fs = require('fs');
+
+function read2DCharArray(path) {
+  const lines = fs.readFileSync(path, 'utf8').split(/\r?\n/);
+  return lines.map(line => [...line]);
+}
+
+class Grid {
+    trail = [];
+   yourPosition = [];
+   destinationPosition = [];
+   direction = 'north';
+   read2DCharArray(path) {
+        const lines = fs.readFileSync(path, 'utf8').split(/\r?\n/);
+        return lines.map(line => [line]);
+    }
+    constructor(filename) {
+        this.direction = 'north';
+        let grid = read2DCharArray(filename);
+        grid.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                console.log(cell);
+                if (cell === '@') {
+                    this.yourPosition = [rowIndex, colIndex];
+                }
+                if (cell === '#') {
+                    this.destinationPosition = [rowIndex, colIndex];
+                }
+            });
+        });
+    }
+    changeDirection() {
+        if (this.direction === 'north') {
+            this.direction = 'east';
+        } else if (this.direction === 'east') {
+            this.direction = 'south';
+        } else if (this.direction === 'south') {
+            this.direction = 'west';
+        } else if (this.direction === 'west') {
+            this.direction = 'north';   
+        }   
+    }
+
+    pointExists(x,y) {
+        console.log(this.trail);
+        this.trail.forEach(point => {
+            if (point[0] === x && point[1] === y) {
+                return true;
+            }
+        });
+
+        return x === this.destinationPosition[0] && y === this.destinationPosition[1];
+    }
+
+
+    destinationSurrounded() {
+        return (this.pointExists(this.destinationPosition[0] - 1, this.destinationPosition[1]) &&
+                this.pointExists(this.destinationPosition[0] + 1, this.destinationPosition[1]) &&
+                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] - 1) &&
+                this.pointExists(this.destinationPosition[0], this.destinationPosition[1] + 1));
+    }
+
+
+    partTwoMove() {
+        let steps = 0;
+        while (steps < 50 && !this.destinationSurrounded()) {
+            console.log(this.yourPosition, " ", this.destinationPosition," ",steps);
+            if (this.direction === 'north') {
+                if (!this.pointExists(this.yourPosition[0] - 1, this.yourPosition[1])) {
+                    this.yourPosition[0] -= 1;
+                    this.trail.push(this.yourPosition);
+                    steps+=1;
+                }
+            } else if (this.direction === 'east') {
+                if (!this.pointExists(this.yourPosition[0], this.yourPosition[1] + 1)) {
+                    this.yourPosition[1] += 1;
+                    this.trail.push(this.yourPosition);
+                    steps+=1;
+                } 
+            } else if (this.direction === 'south') {
+                if (!this.pointExists(this.yourPosition[0] + 1, this.yourPosition[1])) {
+                    this.yourPosition[0] += 1;
+                    this.trail.push(this.yourPosition);
+                    steps+=1;
+                }
+            } else if (this.direction === 'west') {
+                if (!this.pointExists(this.yourPosition[0], this.yourPosition[1] - 1)) {
+                    this.yourPosition[1] -= 1;
+                    this.trail.push(this.yourPosition);
+                    steps+=1;
+                }
+            }
+            this.changeDirection();
+        }
+        return steps;
+    }
+};
+
+// Example:
+const example1 = new Grid('example2.txt');
+console.log(example1.partTwoMove()); // 10  
