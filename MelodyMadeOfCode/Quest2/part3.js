@@ -98,10 +98,10 @@ class Grid {
         }
     }
 
-    partOneMove() {
-        let steps = 0;
+    partThreeMove() {
+        let steps = 0; let directionCount = 0
         while (!this.destinationIsSurrounded()) {
-            //console.log(this.yourPosition, " ", this.destinationPosition," ",steps);
+            console.log(this.yourPosition, " ", this.destinationPosition," ",steps);
             this.grid[this.yourPosition[0]][this.yourPosition[1]] = '+';
             if (this.direction === 'north') {
                 if (this.yourPosition[0] > 0 &&
@@ -109,7 +109,7 @@ class Grid {
                     this.yourPosition[0] -= 1;
                     this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
-                     //this.printGrid();
+                     this.printGrid();
                 }
             } else if (this.direction === 'east') {
                 if (this.yourPosition[1] < this.grid[0].length - 1 &&
@@ -117,7 +117,7 @@ class Grid {
                     this.yourPosition[1] += 1;
                     this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
-                     //this.printGrid();
+                     this.printGrid();
                 } 
             } else if (this.direction === 'south') {
                 if (this.yourPosition[0] < this.grid.length - 1 &&
@@ -125,7 +125,7 @@ class Grid {
                     this.yourPosition[0] += 1;
                     this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
-                     //this.printGrid();
+                     this.printGrid();
                 }
             } else if (this.direction === 'west') {
                 if (this.yourPosition[1] > 0 &&
@@ -133,7 +133,7 @@ class Grid {
                     this.yourPosition[1] -= 1;
                     this.grid[this.yourPosition[0]][this.yourPosition[1]] = '@';
                     steps+=1;
-                     //this.printGrid();
+                     this.printGrid();
                 }
             }
             // expand the grid if we are about to go out of bounds
@@ -142,8 +142,11 @@ class Grid {
                 this.expandGrid();
             }
             this.checkpropogationonAllSides();
-            this.changeDirection();
-           
+            directionCount++;
+            if (directionCount > 2) {
+                this.changeDirection();
+                directionCount = 0;
+            }
         }
         this.printGrid();
         return steps;
@@ -151,5 +154,5 @@ class Grid {
 };
 
 // Example:
-const example1 = new Grid('part2.txt');
-console.log(example1.partOneMove()); // 10  
+const example1 = new Grid('example3.txt');
+console.log(example1.partThreeMove()); // 10  
